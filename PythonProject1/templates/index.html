@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+#глав страница
+
+{% block title %}
+
+{% endblock %}
+
+{% block content %}
+<div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+    <h1 class="display-4 fw-normal text-white"></h1>
+      <p class="fs-5 text-body-secondary"></p>
+    </div>
+<div class="hero-inner">
+    <div>
+      <div class="eyebrow">ПЛАТФОРМА ДЛЯ IT-СПЕЦИАЛИСТОВ</div>
+      <h1>Найди напарника<br>для своего <span>IT проекта</span></h1>
+      <p>Nexora — платформа, где разработчики, дизайнеры, продукты и другие IT-специалисты находят единомышленников для реализации идей, стартапов и пет-проектов.</p>
+      <form class="search" onsubmit="findPartner(event)">
+        <input id="searchInput" placeholder="Кого ищем? Например, frontend, backend, дизайнер">
+        <select>
+          <option>Онлайн / Офлайн</option>
+          <option>Онлайн</option>
+          <option>Офлайн</option>
+        </select>
+        <button>Найти напарника</button>
+      </form>
+      <div class="tags">
+        <span>Frontend</span><span>Backend</span><span>Fullstack</span><span>UI/UX</span><span>Product</span><span>DevOps</span><span>QA</span><span>Mobile</span>
+      </div>
+    </div>
+
+<div class="visual">
+    <div class="glow"></div>
+</div>
+
+<div class="visual">
+    <div class="glow"></div>
+</div>
+
+  </div>
+{% endblock %}
