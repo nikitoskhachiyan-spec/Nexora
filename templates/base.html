@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Nexora Assist{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='scc/main.css') }}">
+</head>
+
+<body>
+
+<header class="site-header">
+    <!-- Логотип -->
+    <a href="{{ url_for('index') }}" class="brand">
+        <img
+            src="{{ url_for('static', filename='nexora-icon.png') }}"
+            alt="Nexora"
+            class="logo-icon"
+        >
+        <span>Nexora Assist</span>
+    </a>
+
+    <!-- Основное меню -->
+    <nav class="main-nav">
+        <a href="{{ url_for('index') }}">Главная</a>
+        <a href="{{ url_for('about') }}">Про нас</a>
+        <a href="{{ url_for('profile') }}">Профиль</a>
+    </nav>
+
+    <!-- Авторизация -->
+    <div class="auth-buttons">
+        {% if session.get('user_id') %}
+
+            <span class="nav-user">
+                Привет, {{ session.get('username') }}!
+            </span>
+
+            <form
+                method="POST"
+                action="{{ url_for('auth.logout') }}"
+                class="logout-form"
+            >
+                <button type="submit" class="nav-btn logout-btn">
+                    Выйти
+                </button>
+            </form>
+
+        {% else %}
+
+            <a href="{{ url_for('auth.login') }}"
+               class="nav-btn login-btn">
+                Войти
+            </a>
+
+            <a href="{{ url_for('auth.register') }}"
+               class="nav-btn register-btn">
+                Регистрация
+            </a>
+
+        {% endif %}
+    </div>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>

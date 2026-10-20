@@ -1,0 +1,1292 @@
+
+/* ==============================
+   ОСНОВНЫЕ НАСТРОЙКИ
+================================ */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body,
+main,
+#app,
+.wrapper {
+    background-color: #171a2b !important;
+    color: #f8f9fa !important;
+}
+
+body {
+    font-family: Inter, Arial, sans-serif;
+    background: #171a2b;
+    color: #f8f9fa;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* ==============================
+   ШАПКА САЙТА
+================================ */
+
+.logo {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    height: 76px;
+    padding: 0 6%;
+
+    background: #101329;
+    color: #ffffff;
+}
+
+/* Иконка и название Nexora слева */
+
+.logo .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    flex-shrink: 0;
+    color: #ffffff;
+    font-size: 25px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.logo .logo-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+
+/* Навигация по центру */
+
+.logo nav {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+
+    margin: 0 !important;
+    white-space: nowrap;
+}
+
+.logo nav a {
+    margin: 0 !important;
+    padding: 10px 0 !important;
+
+    color: #d5d7e6 !important;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 700;
+    transition: color 0.2s ease;
+}
+
+.logo nav a:hover {
+    color: #ffffff !important;
+}
+
+
+/* ==============================
+   ДОПОЛНИТЕЛЬНЫЕ ЭЛЕМЕНТЫ ШАПКИ
+================================ */
+
+.header {
+    height: 76px;
+    background: #101329;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    gap: 30px;
+}
+
+.logo b {
+    color: #7884ff;
+    font-size: 27px;
+}
+
+.nav {
+    display: flex;
+    gap: 32px;
+    color: #d5d7e6;
+    font-size: 14px;
+}
+
+.nav a:hover {
+    color: #fff;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-size: 14px;
+}
+
+.register,
+.primary {
+    background: linear-gradient(135deg, #6574ff, #8a6cf0);
+    color: #fff;
+    border: 0;
+    border-radius: 9px;
+    padding: 13px 22px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+
+/* ==============================
+   ГЛАВНЫЙ ЭКРАН
+================================ */
+
+.hero {
+    background:
+        radial-gradient(
+            circle at 80% 35%,
+            #292f66 0,
+            transparent 33%
+        ),
+        #101329;
+
+    color: #fff;
+    padding: 72px 6% 60px;
+}
+
+.hero-inner {
+    max-width: 1320px;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: 60px;
+}
+
+.eyebrow {
+    font-size: 15px;
+    letter-spacing: 3px;
+    color: #8994ff;
+    font-weight: 800;
+    margin-bottom: 22px;
+}
+
+
+/* Главный заголовок */
+h1 {
+    font-size: 42px;
+    line-height: 1.15;
+    margin-bottom: 22px;
+}
+
+/* Заголовки внутри авторизации и профиля */
+.auth-container h1 {
+    font-size: 28px;
+    line-height: 1.2;
+}
+
+/* Заголовок на телефонах */
+@media (max-width: 700px) {
+    h1 {
+        font-size: 32px;
+        line-height: 1.2;
+    }
+}
+
+
+h1 span {
+    color: #7784ff;
+}
+
+
+.hero p {
+    max-width: 750px;
+    color: #b9bdd0;
+    line-height: 1.65;
+    font-size: 17px;
+    margin-top: 0;
+    margin-bottom: 36px;
+}
+
+
+
+/* ==============================
+   ФОРМА ПОИСКА
+================================ */
+
+.search {
+    background: #fff;
+    border-radius: 12px;
+    padding: 7px;
+
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    max-width: 760px;
+    margin-top: 12px;
+}
+
+.search input {
+    flex: 1;
+    min-width: 0;
+
+    border: 0;
+    outline: 0;
+    padding: 15px;
+    font-size: 14px;
+}
+
+.search select {
+    flex: 0 0 185px;
+
+    border: 0;
+    border-left: 1px solid #e2e3e8;
+    padding: 15px 10px;
+
+    outline: 0;
+    color: #555;
+    background: #fff;
+}
+
+.search button {
+    flex: 0 0 auto;
+
+    background: #6675ff;
+    color: #fff;
+    border: 0;
+    border-radius: 8px;
+
+    padding: 15px 22px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+
+/* ==============================
+   ТЕГИ СПЕЦИАЛИЗАЦИЙ
+================================ */
+
+
+.tags {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 9px;
+    margin-top: 17px;
+    width: 100%;
+}
+
+.tags span {
+    flex-shrink: 0;
+    white-space: nowrap;
+
+    border: 1px solid #383e63;
+    border-radius: 20px;
+    padding: 10px 16px;
+
+    color: #c7cadb;
+    font-size: 15px;
+}
+
+
+
+
+/* ==============================
+   ИЛЛЮСТРАЦИЯ НА ГЛАВНОЙ
+================================ */
+
+.visual {
+    height: 360px;
+    position: relative;
+}
+
+.glow {
+    position: absolute;
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+
+    background: #6574ff;
+    filter: blur(70px);
+    opacity: 0.2;
+
+    left: 90px;
+    top: 50px;
+}
+
+.person {
+    position: absolute;
+    width: 150px;
+    height: 180px;
+
+    border-radius: 75px 75px 35px 35px;
+    background: linear-gradient(180deg, #343b74, #191e3c);
+
+    bottom: 20px;
+    left: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 75px;
+    box-shadow: 0 25px 60px #05071455;
+}
+
+.person.two {
+    left: 220px;
+    bottom: 42px;
+
+    background: linear-gradient(180deg, #514d88, #252044);
+    font-size: 68px;
+}
+
+.code {
+    position: absolute;
+    right: 35px;
+    top: 28px;
+
+    width: 82px;
+    height: 82px;
+    border-radius: 20px;
+
+    background: #6574ff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 31px;
+    font-weight: 800;
+
+    box-shadow: 0 15px 40px #6675ff55;
+}
+
+.bubble {
+    position: absolute;
+    left: 150px;
+    top: 35px;
+
+    background: #6574ff;
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+}
+
+
+/* ==============================
+   БЛОКИ И ПРЕИМУЩЕСТВА
+================================ */
+
+.features {
+    max-width: 1200px;
+    margin: auto;
+    padding: 65px 30px;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 35px;
+}
+
+.feature-icon,
+.cat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+
+    background: #eef0ff;
+    color: #6371ed;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 23px;
+    margin-bottom: 18px;
+}
+
+.feature h3 {
+    font-size: 17px;
+    margin-bottom: 10px;
+}
+
+.feature p {
+    color: #74788b;
+    line-height: 1.55;
+    font-size: 14px;
+}
+
+
+/* ==============================
+   СЕКЦИИ
+================================ */
+
+.section {
+    max-width: 1200px;
+    margin: auto;
+    padding: 70px 30px;
+}
+
+.section.light {
+    max-width: none;
+    background: #eef0f7;
+}
+
+.section-title {
+    margin-bottom: 35px;
+}
+
+.section-title small {
+    color: #6674ef;
+    letter-spacing: 2px;
+    font-weight: 800;
+    font-size: 12px;
+}
+
+.section-title h2 {
+    font-size: 36px;
+    margin: 10px 0;
+}
+
+.section-title p {
+    color: #777b8e;
+}
+
+
+/* ==============================
+   КАРТОЧКИ
+================================ */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #e6e7ee;
+    border-radius: 16px;
+    padding: 25px;
+    transition: 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 35px #25294a12;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #777b8e;
+    line-height: 1.55;
+    font-size: 14px;
+}
+
+
+/* ==============================
+   СПИСОК ПОЛЬЗОВАТЕЛЕЙ
+================================ */
+
+.users {
+    max-width: 980px;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    background: #fff;
+    border: 1px solid #e5e6ee;
+    border-radius: 15px;
+
+    padding: 19px;
+    margin-bottom: 13px;
+}
+
+.avatar {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+
+    background: linear-gradient(135deg, #6875ee, #8b6ce9);
+    color: #fff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 800;
+    font-size: 20px;
+}
+
+.userinfo {
+    flex: 1;
+}
+
+.userinfo h3 {
+    margin-bottom: 4px;
+}
+
+.role {
+    color: #6573ed;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.skills {
+    font-size: 12px;
+    color: #555;
+}
+
+.user button {
+    border: 0;
+    background: #6875ed;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px 17px;
+    cursor: pointer;
+}
+
+
+/* ==============================
+   ШАГИ
+================================ */
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.step {
+    background: #fff;
+    border: 1px solid #e5e6ee;
+    border-radius: 16px;
+    padding: 30px;
+}
+
+.number {
+    font-size: 31px;
+    color: #6875ed;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.step p {
+    color: #777b8e;
+    line-height: 1.55;
+    margin-top: 10px;
+}
+
+
+/* ==============================
+   ПРИЗЫВ К ДЕЙСТВИЮ
+================================ */
+
+.cta {
+    margin: 65px auto;
+    max-width: 1100px;
+
+    border-radius: 22px;
+
+    background:
+        radial-gradient(
+            circle at 75% 30%,
+            #30376e,
+            transparent 35%
+        ),
+        #101329;
+
+    color: #fff;
+    text-align: center;
+    padding: 65px 25px;
+}
+
+.cta h2 {
+    font-size: 36px;
+    margin-bottom: 12px;
+}
+
+.cta p {
+    color: #b9bdd0;
+    margin-bottom: 25px;
+}
+
+
+/* ==============================
+   ПОДВАЛ
+================================ */
+
+.footer {
+    background: #101329;
+    color: #fff;
+
+    padding: 45px 7%;
+
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+}
+
+.footer p,
+.footer a {
+    color: #9ea3ba;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.footer h3 {
+    margin-bottom: 10px;
+}
+
+.footer a {
+    display: block;
+}
+
+
+/* ==============================
+   ПРОФИЛЬ
+================================ */
+
+.profile-container {
+    display: flex;
+    justify-content: center;
+    padding: 100px 20px 40px;
+}
+
+.profile-card {
+    background: rgba(30, 35, 60, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    width: 700px;
+    max-width: 100%;
+    color: #fff;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.avatar-wrapper {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+
+    background: linear-gradient(135deg, #6a5acd, #483d8b);
+    padding: 3px;
+    flex-shrink: 0;
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-name {
+    margin: 0 0 5px 0;
+    font-size: 24px;
+    color: #fff;
+}
+
+.profile-role {
+    margin: 0 0 8px 0;
+    color: #a0a0c0;
+}
+
+.profile-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #4ade80;
+    font-size: 14px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #4ade80;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.edit-btn {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid #6a5acd;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.profile-section {
+    margin-bottom: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+}
+
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.skill-tag {
+    background: rgba(106, 90, 205, 0.3);
+    color: #b0a0ff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+
+/* ==============================
+   АДАПТАЦИЯ ДЛЯ ПЛАНШЕТОВ
+================================ */
+
+@media (max-width: 900px) {
+    .logo {
+        padding: 0 20px;
+    }
+
+    .logo nav {
+        gap: 12px;
+    }
+
+    .logo nav a {
+        font-size: 15px;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .hero-inner {
+        grid-template-columns: 1fr;
+    }
+
+    .visual {
+        display: none;
+    }
+
+    .features,
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .steps {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        padding: 0 20px;
+    }
+}
+
+
+/* ==============================
+   АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ
+================================ */
+
+@media (max-width: 700px) {
+    .logo {
+        height: auto;
+        min-height: 76px;
+        padding: 12px 16px;
+
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .logo nav {
+        position: static;
+        transform: none;
+
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .logo nav a {
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 39px;
+    }
+
+    .features,
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .header-right .login {
+        display: none;
+    }
+
+    .search {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .search select {
+        flex: auto;
+        width: 100%;
+        border: 0;
+        padding: 12px;
+    }
+
+    .search input {
+        width: 100%;
+    }
+
+    .search button {
+        width: 100%;
+        padding: 14px;
+    }
+
+    .user {
+        flex-wrap: wrap;
+    }
+
+    .user button {
+        width: 100%;
+    }
+
+    .footer {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-container {
+        padding-top: 40px;
+    }
+
+    .profile-card {
+        padding: 24px;
+    }
+
+    .profile-header {
+        flex-wrap: wrap;
+    }
+
+    .edit-btn {
+        margin-left: 0;
+    }
+}
+
+/* Убираем эмодзи и декоративные элементы баннера */
+.visual .code,
+.visual .bubble,
+.visual .person,
+.visual .glow {
+    display: none !important;
+}
+
+/* Делаем поиск простой тёмной строкой */
+.search {
+    display: flex !important;
+    align-items: center;
+    width: 100%;
+    max-width: 760px;
+    height: 54px;
+    padding: 0 15px;
+    background: #20243b !important;
+    border: 1px solid #383e63 !important;
+    border-radius: 12px;
+}
+
+/* Поле ввода */
+.search input {
+    flex: 1;
+    min-width: 0;
+    background: transparent !important;
+    color: white !important;
+    border: none !important;
+    outline: none !important;
+}
+
+/* Убираем список Онлайн / Офлайн */
+.search select {
+    display: none !important;
+}
+
+/* Оформление кнопки */
+.search button {
+    background: transparent !important;
+    color: #8994ff !important;
+    border: none !important;
+}
+
+.tags {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    max-width: 100%;
+    padding-bottom: 5px;
+}
+
+.tags::-webkit-scrollbar {
+    height: 4px;
+}
+
+.tags::-webkit-scrollbar-thumb {
+    background: #383e63;
+    border-radius: 10px;
+}
+
+/* Текст «О себе» в профиле */
+.about-me {
+    font-size: 12px;
+    color: #b0b0b0;
+    line-height: 1.5;
+}
+
+
+/* Nexora Assist — авторизация */
+
+.auth-container {
+    width: min(420px, calc(100% - 32px));
+    margin: 60px auto;
+    padding: 30px;
+    box-sizing: border-box;
+    border-radius: 16px;
+    background: #171923;
+    color: #ffffff;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+}
+
+.auth-container h1 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.auth-container > p {
+    text-align: center;
+    color: #b9bbca;
+    margin-bottom: 24px;
+}
+
+.auth-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.auth-container label {
+    margin-top: 8px;
+}
+
+.auth-container input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid #393d50;
+    border-radius: 8px;
+    background: #222637;
+    color: #ffffff;
+}
+
+.auth-container button {
+    margin-top: 16px;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #7565e8;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.auth-container button:hover {
+    background: #6251d4;
+}
+
+.auth-container a {
+    color: #a99cff;
+}
+
+.auth-message {
+    padding: 12px;
+    margin: 12px 0;
+    border-radius: 8px;
+}
+
+.auth-message.error {
+    background: #48272d;
+    color: #ffc3ca;
+}
+
+.auth-message.success {
+    background: #204132;
+    color: #b9f6d0;
+}
+
+/* Кнопки авторизации в шапке */
+
+.nav-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 9px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.nav-btn-login {
+    color: #ffffff;
+    background: #292d3e;
+    border: 1px solid #454a60;
+}
+
+.nav-btn-login:hover {
+    background: #393f55;
+}
+
+.nav-btn-register {
+    color: #ffffff;
+    background: #7565e8;
+    border: 1px solid #7565e8;
+}
+
+.nav-btn-register:hover {
+    background: #6251d4;
+}
+
+.nav-auth-form {
+    display: inline-block;
+    margin: 0;
+}
+
+.nav-auth-form button {
+    font-family: inherit;
+}
+
+.nav-user {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* ===== Nexora Assist: header ===== */
+
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 16px 6%;
+    background: #101327;
+    border-bottom: 1px solid #252941;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.site-header .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 23px;
+    font-weight: 800;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.site-header .logo-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.site-header .main-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    flex: 1;
+}
+
+.site-header .main-nav a {
+    color: #dfe2f5;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+}
+
+.site-header .main-nav a:hover {
+    color: #8b83ff;
+}
+
+.site-header .auth-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.site-header .nav-user {
+    color: #ffffff;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.site-header .nav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-height: 40px;
+    padding: 10px 16px;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.site-header .login-btn,
+.site-header .logout-btn {
+    color: #ffffff;
+    background: #292d43;
+    border: 1px solid #414762;
+}
+
+.site-header .login-btn:hover,
+.site-header .logout-btn:hover {
+    background: #393f59;
+}
+
+.site-header .register-btn {
+    color: #ffffff;
+    background: #7565e8;
+    border: 1px solid #7565e8;
+}
+
+.site-header .register-btn:hover {
+    background: #6251d4;
+}
+
+.site-header .logout-form {
+    display: inline-flex;
+    margin: 0;
+}
+
+/* Адаптация под узкий экран */
+@media (max-width: 1050px) {
+    .site-header {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .site-header .main-nav {
+        order: 3;
+        flex-basis: 100%;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 16px;
+    }
+
+    .site-header .auth-buttons {
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 520px) {
+    .site-header {
+        padding: 14px 16px;
+    }
+
+    .site-header .brand {
+        font-size: 19px;
+    }
+
+    .site-header .auth-buttons {
+        flex-wrap: wrap;
+    }
+
+    .site-header .nav-user {
+        width: 100%;
+        text-align: right;
+    }
+
+    .site-header .nav-btn {
+        padding: 9px 11px;
+        font-size: 13px;
+    }
+}
+
+/* Исправление размера главного заголовка Nexora */
+
+.hero h1 {
+    font-size: 42px;
+    line-height: 1.15;
+    max-width: 650px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 600px) {
+    .hero h1 {
+        font-size: 32px;
+        line-height: 1.2;
+    }
+}
+
+/* Исправляем размер заголовка Nexora Assist */
+.hero h1,
+.hero-title,
+h1.hero-title {
+    font-size: 42px !important;
+    line-height: 1.15 !important;
+    max-width: 650px;
+}
+
+@media (max-width: 600px) {
+    .hero h1,
+    .hero-title,
+    h1.hero-title {
+        font-size: 32px !important;
+    }
+}

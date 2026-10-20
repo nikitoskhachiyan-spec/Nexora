@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+<div class="profile-container">
+  <div class="profile-card">
+
+    <div class="profile-header">
+      <div class="avatar-wrapper">
+        <img src="https://i.pravatar.cc/150?img=12" alt="Аватар" class="profile-avatar">
+      </div>
+      <div class="profile-info">
+        <h1 class="profile-name">Иван Иванов</h1>
+        <p class="profile-role">Fullstack Разработчик</p>
+
+      </div>
+      <button class="edit-btn">Редактировать</button>
+    </div>
+
+    <div class="profile-section">
+      <h3>О себе</h3>
+      <p class="profile-bio">Привет! Я разработчик с 5-летним опытом. Ищу единомышленников для создания крутого IT-стартапа.</p>
+    </div>
+
+    <div class="profile-section">
+      <h3>Навыки</h3>
+      <div class="skills-list">
+        <span class="skill-tag">Frontend</span>
+        <span class="skill-tag">React</span>
+        <span class="skill-tag">Node.js</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
