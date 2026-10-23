@@ -1,0 +1,50 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#02091e"/>
+      <stop offset="55%" stop-color="#06113b"/>
+      <stop offset="100%" stop-color="#10052e"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#642cff"/>
+      <stop offset="40%" stop-color="#087bff"/>
+      <stop offset="65%" stop-color="#00c8ff"/>
+      <stop offset="100%" stop-color="#382cff"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-100%" width="160%" height="300%">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+
+  <g fill="none" stroke="url(#wave)" stroke-linecap="round">
+    <g opacity=".5" filter="url(#glow)" stroke-width="10">
+      <path d="M-100 450 C180 280 270 650 520 470 S900 650 1160 390 S1440 180 1700 330"/>
+      <path d="M-100 700 C180 520 330 850 600 650 S950 850 1210 600 S1470 430 1700 560"/>
+      <path d="M-100 270 C180 100 350 420 620 260 S970 420 1220 180 S1490 80 1700 150"/>
+    </g>
+
+    <g opacity=".85" stroke-width="2">
+      <path d="M-100 450 C180 280 270 650 520 470 S900 650 1160 390 S1440 180 1700 330"/>
+      <path d="M-100 470 C180 300 270 670 520 490 S900 670 1160 410 S1440 200 1700 350"/>
+      <path d="M-100 490 C180 320 270 690 520 510 S900 690 1160 430 S1440 220 1700 370"/>
+      <path d="M-100 700 C180 520 330 850 600 650 S950 850 1210 600 S1470 430 1700 560"/>
+      <path d="M-100 720 C180 540 330 870 600 670 S950 870 1210 620 S1470 450 1700 580"/>
+      <path d="M-100 270 C180 100 350 420 620 260 S970 420 1220 180 S1490 80 1700 150"/>
+      <path d="M-100 290 C180 120 350 440 620 280 S970 440 1220 200 S1490 100 1700 170"/>
+    </g>
+  </g>
+
+  <g fill="#168cff">
+    <circle cx="130" cy="180" r="2"/>
+    <circle cx="340" cy="570" r="3"/>
+    <circle cx="790" cy="125" r="2"/>
+    <circle cx="1050" cy="250" r="3"/>
+    <circle cx="1390" cy="460" r="2"/>
+    <circle cx="1480" cy="780" r="3"/>
+    <circle cx="220" cy="850" r="2"/>
+    <circle cx="920" cy="890" r="2"/>
+  </g>
+</svg>
