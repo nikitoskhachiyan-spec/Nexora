@@ -1,6 +1,5 @@
+
 {% extends "base.html" %}
-
-
 
 {% block content %}
 <div class="profile-container">
@@ -8,31 +7,105 @@
 
     <div class="profile-header">
       <div class="avatar-wrapper">
-        <img src="https://i.pravatar.cc/150?img=12" alt="Аватар" class="profile-avatar">
+        {% if profile.avatar %}
+          <img src="{{ url_for('static', filename=profile.avatar) }}"
+               alt="Аватар" class="profile-avatar">
+        {% else %}
+          <div class="profile-avatar avatar-placeholder">
+            {{ (profile.full_name or username)[0] | upper }}
+          </div>
+        {% endif %}
       </div>
+
       <div class="profile-info">
-        <h1 class="profile-name">Иван Иванов</h1>
-        <p class="profile-role">Fullstack Разработчик</p>
-        <div class="profile-status">
-          <span class="status-dot"></span> Онлайн
-        </div>
+        <h1 class="profile-name">
+          {{ profile.full_name or username }}
+        </h1>
+        <p class="profile-role">
+          {{ profile.profession or 'Профессия не указана' }}
+        </p>
       </div>
-      <button class="edit-btn">Редактировать</button>
+
+      <button class="edit-btn" type="button"
+              onclick="document.getElementById('profile-form').hidden = false; this.hidden = true;">
+        Редактировать
+      </button>
     </div>
 
     <div class="profile-section">
       <h3>О себе</h3>
-      <p class="profile-bio">Привет! Я разработчик с 5-летним опытом. Ищу единомышленников для создания крутого IT-стартапа.</p>
+      <p class="profile-bio">
+        {{ profile.about or 'Пока ничего не рассказано о себе.' }}
+      </p>
     </div>
 
     <div class="profile-section">
       <h3>Навыки</h3>
       <div class="skills-list">
-        <span class="skill-tag">Frontend</span>
-        <span class="skill-tag">React</span>
-        <span class="skill-tag">Node.js</span>
+        {% for skill in profile.skills.split(',') if skill.strip() %}
+          <span class="skill-tag">{{ skill.strip() }}</span>
+        {% else %}
+          <span>Навыки пока не указаны.</span>
+        {% endfor %}
       </div>
     </div>
+
+    {% if profile.experience %}
+    <div class="profile-section">
+      <h3>Опыт</h3>
+      <p>{{ profile.experience }}</p>
+    </div>
+    {% endif %}
+
+    {% if profile.portfolio_url %}
+    <div class="profile-section">
+      <h3>GitHub / Портфолио</h3>
+      <a href="{{ profile.portfolio_url }}" target="_blank"
+         rel="noopener noreferrer">
+        Открыть портфолио
+      </a>
+    </div>
+    {% endif %}
+
+    <form id="profile-form" method="POST" hidden>
+      <div class="profile-section">
+        <h3>Редактирование профиля</h3>
+
+        <label for="full_name">Имя и фамилия</label>
+        <input id="full_name" name="full_name" maxlength="100"
+               value="{{ profile.full_name or '' }}">
+
+        <label for="profession">Профессия</label>
+        <input id="profession" name="profession" maxlength="100"
+               value="{{ profile.profession or '' }}">
+
+        <label for="skills">Навыки через запятую</label>
+        <input id="skills" name="skills" maxlength="500"
+               value="{{ profile.skills or '' }}"
+               placeholder="Python, Flask, HTML, CSS">
+
+        <label for="experience">Опыт</label>
+        <input id="experience" name="experience" maxlength="100"
+               value="{{ profile.experience or '' }}"
+               placeholder="Например, начинающий">
+
+        <label for="about">О себе</label>
+        <textarea id="about" name="about" maxlength="2000"
+                  rows="5">{{ profile.about or '' }}</textarea>
+
+        <label for="portfolio_url">GitHub или портфолио (ссылка)</label>
+        <input id="portfolio_url" name="portfolio_url" type="url"
+               maxlength="300"
+               value="{{ profile.portfolio_url or '' }}"
+               placeholder="https://github.com/username">
+
+        <button class="edit-btn" type="submit">Сохранить</button>
+        <button type="button" class="edit-btn"
+                onclick="document.getElementById('profile-form').hidden = true; document.querySelector('.edit-btn').hidden = false;">
+          Отмена
+        </button>
+      </div>
+    </form>
 
   </div>
 </div>
