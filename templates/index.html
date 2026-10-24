@@ -16,13 +16,17 @@
       <div class="eyebrow">ПЛАТФОРМА ДЛЯ IT-СПЕЦИАЛИСТОВ</div>
       <h1>Найди напарника<br>для своего <span>IT проекта</span></h1>
       <p>Nexora Assist — платформа, где разработчики, дизайнеры, продукты и другие IT-специалисты находят единомышленников для реализации идей, стартапов и пет-проектов.</p>
-      <form class="search" onsubmit="findPartner(event)">
-        <input id="searchInput" placeholder="Кого ищем? Например, frontend, backend, дизайнер">
-        <select>
-          <option>Онлайн / Офлайн</option>
-          <option>Онлайн</option>
-          <option>Офлайн</option>
-        </select>
+      <form class="search" action="{{ url_for('partners') }}" method="get">
+        <input
+    id="searchInput"
+    name="q"
+    placeholder="Кого ищем? Например, frontend, backend, дизайнер"
+>
+        <select name="mode">
+    <option value="">Любой формат</option>
+    <option value="Онлайн">Онлайн</option>
+    <option value="Офлайн">Офлайн</option>
+</select>
         <button>Найти напарника</button>
       </form>
       <div class="tags">

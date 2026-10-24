@@ -20,6 +20,7 @@ def get_db():
     return conn
 
 
+
 def init_auth_db():
     with get_db() as conn:
         conn.execute("""
@@ -31,6 +32,22 @@ def init_auth_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS profiles (
+                user_id INTEGER PRIMARY KEY,
+                full_name TEXT DEFAULT '',
+                profession TEXT DEFAULT '',
+                skills TEXT DEFAULT '',
+                experience TEXT DEFAULT '',
+                about TEXT DEFAULT '',
+                portfolio_url TEXT DEFAULT '',
+                avatar TEXT DEFAULT '',
+                FOREIGN KEY (user_id) REFERENCES users(id)
+            )
+        """)
+
+
 
 
 @auth.route("/register", methods=["GET", "POST"])

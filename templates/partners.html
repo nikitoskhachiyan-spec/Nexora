@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Найти напарника{% endblock %}
+
+{% block content %}
+
+
+<section class="partners-page">
+
+    <h1>Найти напарника</h1>
+
+
+<form action="{{ url_for('partners') }}" method="get" class="partner-filters">
+
+    <input
+        type="search"
+        name="q"
+        value="{{ query }}"
+        placeholder="Имя, навыки или проект..."
+        autocomplete="off"
+    >
+
+    <label for="specialization">Специализация</label>
+    <select name="specialization" id="specialization">
+        <option value="">Все специализации</option>
+        {% for item in ["Frontend", "Backend", "Fullstack", "UI/UX", "Mobile", "QA", "DevOps"] %}
+        <option value="{{ item }}" {% if specialization == item %}selected{% endif %}>
+            {{ item }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <label for="experience">Опыт</label>
+    <select name="experience" id="experience">
+        <option value="">Любой опыт</option>
+        {% for item in ["Начинающий", "Средний", "Опытный"] %}
+        <option value="{{ item }}" {% if experience == item %}selected{% endif %}>
+            {{ item }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <label for="mode">Формат работы</label>
+    <select name="mode" id="mode">
+        <option value="">Любой формат</option>
+        {% for item in ["Онлайн", "Офлайн"] %}
+        <option value="{{ item }}" {% if mode == item %}selected{% endif %}>
+            {{ item }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <label for="language">Язык программирования</label>
+    <select name="language" id="language">
+        <option value="">Любой язык</option>
+        {% for item in ["Python", "JavaScript", "Java", "Dart", "C#"] %}
+        <option value="{{ item }}" {% if language == item %}selected{% endif %}>
+            {{ item }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <label for="project_type">Тип проекта</label>
+    <select name="project_type" id="project_type">
+        <option value="">Любой проект</option>
+        {% for item in ["Веб-сайт", "Мобильное приложение", "Telegram-бот", "Игра", "Дизайн"] %}
+        <option value="{{ item }}" {% if project_type == item %}selected{% endif %}>
+            {{ item }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Применить фильтры</button>
+
+    <a href="{{ url_for('partners') }}">Сбросить</a>
+
+</form>
+
+
+    <p>Найдено специалистов: {{ partners|length }}</p>
+
+    <div class="partners-grid">
+        {% for partner in partners %}
+        <div class="partner-card">
+            <div class="partner-avatar">
+                {{ partner.name[0] }}
+            </div>
+
+            <h2>{{ partner.name }}</h2>
+            <p>{{ partner.role }}</p>
+            <p><strong>Навыки:</strong> {{ partner.skills }}</p>
+            <p><strong>Проект:</strong> {{ partner.project }}</p>
+        </div>
+        {% else %}
+        <p>Никого не нашли. Попробуй другой запрос.</p>
+        {% endfor %}
+    </div>
+
+</section>
+
+
+{% endblock %}

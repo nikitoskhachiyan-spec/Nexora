@@ -1290,3 +1290,432 @@ h1.hero-title {
         font-size: 32px !important;
     }
 }
+.partners {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    padding: 30px;
+    justify-content: center;
+}
+
+.partner-card {
+    width: 280px;
+    padding: 25px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #4f46e5;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.partner-card h2 {
+    margin-bottom: 5px;
+}
+
+.profession {
+    color: #666;
+}
+
+.partner-card button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #4f46e5;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.partner-card button:hover {
+    background: #3730a3;
+}
+/* ===== НАЙТИ НАПАРНИКА ===== */
+
+.partners-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 50px 30px;
+}
+
+.partners-page h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.partners-subtitle {
+    color: #a8adc7;
+    font-size: 18px;
+    margin-bottom: 40px;
+}
+
+.partners-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.partner-card {
+    background: #20243a;
+    border: 1px solid #303653;
+    border-radius: 20px;
+    padding: 25px;
+    transition: 0.2s;
+}
+
+.partner-card:hover {
+    transform: translateY(-5px);
+    border-color: #6c63ff;
+}
+
+.partner-avatar {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: #6c63ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 18px;
+}
+
+.partner-card h2 {
+    color: white;
+    margin-bottom: 8px;
+}
+
+.partner-profession {
+    color: #8f89ff;
+    margin-bottom: 18px;
+}
+
+.partner-card p {
+    color: #c4c7d9;
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+
+.partner-card strong {
+    color: white;
+}
+
+.partner-card button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 10px;
+    background: #6c63ff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.partner-card button:hover {
+    background: #554cff;
+}
+
+@media (max-width: 900px) {
+    .partners-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .partners-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* Отступы на странице поиска напарников */
+.partners-page form {
+    margin-bottom: 16px;
+}
+
+.partners-page > p {
+    margin-top: 12px;
+    margin-bottom: 16px;
+}
+
+.partners-grid {
+    margin-top: 16px;
+    gap: 20px;
+}
+/* Поле поиска на странице напарников */
+.partners-page form input[type="search"] {
+    background-color: #202438;
+    color: #f5f6ff;
+    border: 1px solid #3b4263;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 15px;
+    outline: none;
+}
+
+/* Цвет текста-подсказки */
+.partners-page form input[type="search"]::placeholder {
+    color: #a6abc2;
+}
+
+/* Подсветка рамки при нажатии */
+.partners-page form input[type="search"]:focus {
+    border-color: #7461ff;
+    box-shadow: 0 0 0 3px rgba(116, 97, 255, 0.15);
+}
+
+/* Кнопка поиска */
+.partners-page form button {
+    background-color: #7461ff;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 18px;
+    cursor: pointer;
+}
+
+/* Поле поиска на главной странице */
+.search input,
+form.search input,
+#searchInput {
+    background: transparent !important;
+    color: #f5f6ff !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    padding: 12px 16px;
+    font-size: 15px;
+    color-scheme: dark;
+}
+
+.search input::placeholder,
+form.search input::placeholder,
+#searchInput::placeholder {
+    color: #a6abc2 !important;
+}
+
+.search input:focus,
+form.search input:focus,
+#searchInput:focus {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Поиск на странице напарников — всегда тёмный */
+.partners-page input,
+.partners-page input[type="search"],
+.partners-page input[name="q"],
+input[name="q"] {
+    background-color: #202438 !important;
+    color: #f5f6ff !important;
+    -webkit-text-fill-color: #f5f6ff !important;
+    border: 1px solid #3b4263 !important;
+    box-shadow: none;
+    color-scheme: dark;
+}
+
+/* Когда поле активно и в него вводят текст */
+.partners-page input:focus,
+.partners-page input[name="q"]:focus,
+input[name="q"]:focus {
+    background-color: #202438 !important;
+    color: #f5f6ff !important;
+    -webkit-text-fill-color: #f5f6ff !important;
+    outline: none;
+}
+
+/* Если браузер применяет автозаполнение */
+input[name="q"]:-webkit-autofill,
+input[name="q"]:-webkit-autofill:hover,
+input[name="q"]:-webkit-autofill:focus {
+    -webkit-text-fill-color: #f5f6ff !important;
+    -webkit-box-shadow: 0 0 0 1000px #202438 inset !important;
+    background-color: #202438 !important;
+}
+
+/* Фильтры специалистов */
+.partner-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.partner-filters input,
+.partner-filters select {
+    background-color: #202438 !important;
+    color: #f5f6ff !important;
+    border: 1px solid #3b4263;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 14px;
+    max-width: 100%;
+}
+
+.partner-filters input {
+    flex: 1 1 100%;
+}
+
+.partner-filters select {
+    flex: 1 1 160px;
+}
+
+.partner-filters label {
+    color: #c7cbe0;
+    font-size: 13px;
+}
+
+.partner-filters button {
+    background: #7461ff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 18px;
+    cursor: pointer;
+}
+
+.partner-filters a {
+    color: #a6abc2;
+    text-decoration: none;
+}
+
+/* Форма редактирования профиля */
+#profile-form {
+    margin-top: 24px;
+    border-top: 1px solid #343953;
+    padding-top: 24px;
+}
+
+#profile-form[hidden] {
+    display: none !important;
+}
+
+#profile-form .profile-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#profile-form h3 {
+    margin: 0 0 12px;
+    font-size: 22px;
+}
+
+#profile-form label {
+    display: block;
+    margin-top: 8px;
+    color: #d4d8f0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#profile-form input,
+#profile-form textarea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #3d4262;
+    border-radius: 10px;
+    background: #15192d;
+    color: #ffffff;
+    font: inherit;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#profile-form input:focus,
+#profile-form textarea:focus {
+    border-color: #8b72ff;
+    box-shadow: 0 0 0 3px rgba(139, 114, 255, 0.15);
+}
+
+#profile-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+#profile-form button {
+    align-self: flex-start;
+    margin-top: 10px;
+    padding: 11px 20px;
+    border: 1px solid #7660ed;
+    border-radius: 10px;
+    background: #6550cf;
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#profile-form button:hover {
+    background: #7965e8;
+}
+
+@media (max-width: 600px) {
+    .profile-container {
+        padding: 12px;
+    }
+
+    .profile-card {
+        padding: 20px;
+    }
+
+    .profile-header {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    #profile-form button {
+        width: 100%;
+    }
+}
+
+/* Правильное расположение буквы внутри аватарки */
+.avatar-wrapper {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+.avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #7058d8, #49358f);
+    color: #ffffff;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
