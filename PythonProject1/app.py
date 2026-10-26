@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, session, redirect, flash
+﻿from flask import Flask, render_template, url_for, request, session, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from auth import auth, init_auth_db, get_db
@@ -42,81 +42,81 @@ def partners():
 
     partners_data = [
         {
-            "name": "Алексей",
-            "role": "Frontend-разработчик",
+            "name": "РђР»РµРєСЃРµР№",
+            "role": "Frontend-СЂР°Р·СЂР°Р±РѕС‚С‡РёРє",
             "specialization": "Frontend",
             "skills": "HTML, CSS, JavaScript",
-            "experience": "Начинающий",
-            "mode": "Онлайн",
+            "experience": "РќР°С‡РёРЅР°СЋС‰РёР№",
+            "mode": "РћРЅР»Р°Р№РЅ",
             "languages": ["JavaScript"],
-            "project_type": "Веб-сайт",
-            "project": "Создание современного сайта"
+            "project_type": "Р’РµР±-СЃР°Р№С‚",
+            "project": "РЎРѕР·РґР°РЅРёРµ СЃРѕРІСЂРµРјРµРЅРЅРѕРіРѕ СЃР°Р№С‚Р°"
         },
         {
-            "name": "Мария",
-            "role": "UI/UX дизайнер",
+            "name": "РњР°СЂРёСЏ",
+            "role": "UI/UX РґРёР·Р°Р№РЅРµСЂ",
             "specialization": "UI/UX",
             "skills": "Figma, Photoshop",
-            "experience": "Средний",
-            "mode": "Онлайн",
+            "experience": "РЎСЂРµРґРЅРёР№",
+            "mode": "РћРЅР»Р°Р№РЅ",
             "languages": [],
-            "project_type": "Дизайн",
-            "project": "Дизайн мобильного приложения"
+            "project_type": "Р”РёР·Р°Р№РЅ",
+            "project": "Р”РёР·Р°Р№РЅ РјРѕР±РёР»СЊРЅРѕРіРѕ РїСЂРёР»РѕР¶РµРЅРёСЏ"
         },
         {
-            "name": "Иван",
-            "role": "Backend-разработчик",
+            "name": "РРІР°РЅ",
+            "role": "Backend-СЂР°Р·СЂР°Р±РѕС‚С‡РёРє",
             "specialization": "Backend",
             "skills": "Python, Flask, Django",
-            "experience": "Опытный",
-            "mode": "Офлайн",
+            "experience": "РћРїС‹С‚РЅС‹Р№",
+            "mode": "РћС„Р»Р°Р№РЅ",
             "languages": ["Python"],
-            "project_type": "Telegram-бот",
-            "project": "Разработка Telegram-бота"
+            "project_type": "Telegram-Р±РѕС‚",
+            "project": "Р Р°Р·СЂР°Р±РѕС‚РєР° Telegram-Р±РѕС‚Р°"
         },
         {
-            "name": "Денис",
-            "role": "Mobile-разработчик",
+            "name": "Р”РµРЅРёСЃ",
+            "role": "Mobile-СЂР°Р·СЂР°Р±РѕС‚С‡РёРє",
             "specialization": "Mobile",
             "skills": "Flutter, Android, Dart",
-            "experience": "Средний",
-            "mode": "Онлайн",
+            "experience": "РЎСЂРµРґРЅРёР№",
+            "mode": "РћРЅР»Р°Р№РЅ",
             "languages": ["Dart", "Java"],
-            "project_type": "Мобильное приложение",
-            "project": "Разработка мобильного приложения"
+            "project_type": "РњРѕР±РёР»СЊРЅРѕРµ РїСЂРёР»РѕР¶РµРЅРёРµ",
+            "project": "Р Р°Р·СЂР°Р±РѕС‚РєР° РјРѕР±РёР»СЊРЅРѕРіРѕ РїСЂРёР»РѕР¶РµРЅРёСЏ"
         },
         {
-            "name": "София",
-            "role": "QA-инженер",
+            "name": "РЎРѕС„РёСЏ",
+            "role": "QA-РёРЅР¶РµРЅРµСЂ",
             "specialization": "QA",
-            "skills": "Тестирование, Selenium",
-            "experience": "Начинающий",
-            "mode": "Онлайн",
+            "skills": "РўРµСЃС‚РёСЂРѕРІР°РЅРёРµ, Selenium",
+            "experience": "РќР°С‡РёРЅР°СЋС‰РёР№",
+            "mode": "РћРЅР»Р°Р№РЅ",
             "languages": ["Python", "Java"],
-            "project_type": "Веб-сайт",
-            "project": "Тестирование веб-приложения"
+            "project_type": "Р’РµР±-СЃР°Р№С‚",
+            "project": "РўРµСЃС‚РёСЂРѕРІР°РЅРёРµ РІРµР±-РїСЂРёР»РѕР¶РµРЅРёСЏ"
         },
         {
-            "name": "Максим",
-            "role": "DevOps-инженер",
+            "name": "РњР°РєСЃРёРј",
+            "role": "DevOps-РёРЅР¶РµРЅРµСЂ",
             "specialization": "DevOps",
             "skills": "Docker, Linux, CI/CD",
-            "experience": "Опытный",
-            "mode": "Офлайн",
+            "experience": "РћРїС‹С‚РЅС‹Р№",
+            "mode": "РћС„Р»Р°Р№РЅ",
             "languages": ["Python"],
-            "project_type": "Веб-сайт",
-            "project": "Автоматизация развёртывания"
+            "project_type": "Р’РµР±-СЃР°Р№С‚",
+            "project": "РђРІС‚РѕРјР°С‚РёР·Р°С†РёСЏ СЂР°Р·РІС‘СЂС‚С‹РІР°РЅРёСЏ"
         },
         {
-            "name": "Анна",
-            "role": "Fullstack-разработчик",
+            "name": "РђРЅРЅР°",
+            "role": "Fullstack-СЂР°Р·СЂР°Р±РѕС‚С‡РёРє",
             "specialization": "Fullstack",
             "skills": "Python, JavaScript, React",
-            "experience": "Средний",
-            "mode": "Онлайн",
+            "experience": "РЎСЂРµРґРЅРёР№",
+            "mode": "РћРЅР»Р°Р№РЅ",
             "languages": ["Python", "JavaScript"],
-            "project_type": "Веб-сайт",
-            "project": "Создание веб-сервиса"
+            "project_type": "Р’РµР±-СЃР°Р№С‚",
+            "project": "РЎРѕР·РґР°РЅРёРµ РІРµР±-СЃРµСЂРІРёСЃР°"
         }
     ]
 
@@ -172,7 +172,7 @@ def about():
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     if 'user_id' not in session:
-        flash('Сначала войди в аккаунт.', 'error')
+        flash('РЎРЅР°С‡Р°Р»Р° РІРѕР№РґРё РІ Р°РєРєР°СѓРЅС‚.', 'error')
         return redirect(url_for('auth.login'))
 
     user_id = session['user_id']
@@ -204,7 +204,7 @@ def profile():
                  experience, about, portfolio_url)
             )
 
-        flash('Профиль успешно сохранён!', 'success')
+        flash('РџСЂРѕС„РёР»СЊ СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅС‘РЅ!', 'success')
         return redirect(url_for('profile'))
 
 
@@ -236,6 +236,8 @@ def profile():
 def user(name, id):
     return "User page: " + name + " - " + str(id)
 
+init_auth_db();
+
 if __name__ == "__main__":
-    init_auth_db()
     app.run(debug=True)
+
