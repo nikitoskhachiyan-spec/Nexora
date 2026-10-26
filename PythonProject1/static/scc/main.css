@@ -1719,3 +1719,636 @@ input[name="q"]:-webkit-autofill:focus {
     margin: 0;
     box-sizing: border-box;
 }
+/*добавление*/
+
+/* ==========================================
+   NEXORA ASSIST — ОБЩАЯ АДАПТАЦИЯ
+   Телефон / планшет / компьютер
+========================================== */
+
+/* 1. Общие настройки */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    min-width: 320px;
+    overflow-x: clip;
+}
+
+body {
+    width: 100%;
+    min-width: 320px;
+    margin: 0;
+}
+
+main {
+    width: 100%;
+    min-width: 0;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+input,
+select,
+textarea,
+button {
+    font: inherit;
+    max-width: 100%;
+}
+
+input,
+select,
+textarea {
+    min-width: 0;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 2. Общая шапка */
+
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+
+    width: 100%;
+    padding: 16px 5%;
+}
+
+.site-header .brand {
+    flex-shrink: 0;
+    min-width: 0;
+    text-decoration: none;
+}
+
+.site-header .logo-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.site-header .main-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex: 1 1 auto;
+    gap: 12px 20px;
+    min-width: 0;
+}
+
+.site-header .main-nav a {
+    white-space: normal;
+    text-align: center;
+}
+
+.site-header .auth-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-width: 0;
+}
+
+.site-header .nav-user {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.site-header .logout-form {
+    margin: 0;
+}
+
+/* 3. Главная страница */
+
+.hero-inner {
+    display: block;
+    width: 100%;
+    max-width: 1200px;
+    min-width: 0;
+    margin: 0 auto;
+    padding: 48px 5%;
+}
+
+.hero-inner > div:first-child {
+    width: 100%;
+    max-width: 850px;
+    min-width: 0;
+}
+
+.hero-inner .visual {
+    display: none;
+}
+
+.hero-inner .eyebrow {
+    font-size: clamp(12px, 1.5vw, 15px);
+    line-height: 1.5;
+    letter-spacing: 2px;
+    overflow-wrap: anywhere;
+}
+
+.hero-inner h1 {
+    max-width: 760px;
+    font-size: clamp(30px, 4vw, 48px);
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+    margin: 20px 0;
+}
+
+.hero-inner h1 span {
+    overflow-wrap: anywhere;
+}
+
+.hero-inner p {
+    max-width: 750px;
+    font-size: 16px;
+    line-height: 1.65;
+    margin: 0 0 20px;
+    overflow-wrap: anywhere;
+}
+
+/* 4. Поисковая форма главной */
+
+.search {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    justify-content: initial;
+
+    width: 100%;
+    max-width: 760px;
+    height: auto !important;
+    min-height: 0 !important;
+
+    margin: 16px 0 0;
+    padding: 8px;
+    gap: 8px;
+
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+.search input,
+.search #searchInput {
+    display: block;
+    width: 100%;
+    height: 46px;
+    min-height: 46px;
+    max-height: none;
+
+    min-width: 0;
+    padding: 0 12px !important;
+    margin: 0 !important;
+
+    border: 0 !important;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.search select {
+    display: none !important;
+}
+
+.search button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: auto;
+    min-width: 0;
+    min-height: 44px;
+    height: auto;
+
+    flex: initial !important;
+    padding: 10px 16px !important;
+    margin: 0 !important;
+
+    white-space: normal;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* 5. Теги специализаций */
+
+.tags {
+    display: flex;
+    flex-wrap: wrap !important;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    max-width: 760px;
+    min-width: 0;
+
+    gap: 8px;
+    margin-top: 16px;
+    padding-bottom: 4px;
+
+    overflow: visible;
+}
+
+.tags span {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    white-space: nowrap;
+
+    padding: 8px 12px;
+    font-size: 13px;
+}
+
+/* 6. Страница поиска напарников */
+
+.partners-page {
+    width: 100%;
+    max-width: 1260px;
+    min-width: 0;
+    margin: 0 auto;
+    padding: 40px 24px;
+}
+
+.partners-page h1 {
+    font-size: clamp(28px, 4vw, 42px);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.partner-filters {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+    gap: 12px;
+    width: 100%;
+}
+
+.partner-filters input,
+.partner-filters select {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+}
+
+.partner-filters label {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.partner-filters button,
+.partner-filters a {
+    min-height: 44px;
+}
+
+.partners-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.partner-card {
+    width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.partner-card button {
+    min-height: 44px;
+}
+
+/* 7. Профиль */
+
+.profile-container {
+    width: 100%;
+    min-width: 0;
+    padding: 48px 24px;
+}
+
+.profile-card {
+    width: 100%;
+    max-width: 900px;
+    min-width: 0;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    min-width: 0;
+}
+
+.profile-info {
+    flex: 1 1 180px;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.profile-name {
+    font-size: clamp(24px, 4vw, 36px);
+    overflow-wrap: anywhere;
+}
+
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skill-tag {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+#profile-form {
+    width: 100%;
+    min-width: 0;
+}
+
+#profile-form input,
+#profile-form textarea {
+    width: 100%;
+    min-width: 0;
+}
+
+#profile-form[hidden] {
+    display: none !important;
+}
+
+/* 8. Вход и регистрация */
+
+.auth-container {
+    width: min(420px, calc(100% - 32px));
+    margin: 40px auto;
+    padding: clamp(20px, 5vw, 30px);
+}
+
+.auth-container h1 {
+    font-size: clamp(25px, 5vw, 32px);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.auth-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.auth-container input {
+    width: 100%;
+    min-height: 46px;
+}
+
+.auth-container button {
+    width: 100%;
+    min-height: 46px;
+}
+
+.auth-container a {
+    overflow-wrap: anywhere;
+}
+
+.auth-message {
+    overflow-wrap: anywhere;
+}
+
+/* 9. Планшеты */
+
+@media (max-width: 1024px) {
+    .site-header {
+        gap: 16px;
+    }
+
+    .site-header .main-nav {
+        gap: 12px 16px;
+    }
+
+    .partners-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hero-inner {
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+}
+
+/* 10. Телефоны */
+
+@media (max-width: 600px) {
+    .site-header {
+        justify-content: center;
+        gap: 12px;
+        padding: 14px 16px;
+    }
+
+    .site-header .brand {
+        justify-content: center;
+        width: 100%;
+        font-size: 21px;
+        white-space: normal;
+    }
+
+    .site-header .main-nav {
+        order: 2;
+        flex: 1 1 100%;
+        width: 100%;
+        gap: 12px 16px;
+    }
+
+    .site-header .main-nav a {
+        font-size: 14px;
+    }
+
+    .site-header .auth-buttons {
+        order: 3;
+        width: 100%;
+        margin: 0;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .site-header .nav-user {
+        width: auto;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .site-header .nav-btn {
+        min-height: 44px;
+    }
+
+    .hero-inner {
+        padding: 28px 16px 36px;
+    }
+
+    .hero-inner h1 {
+        font-size: clamp(28px, 7.5vw, 36px);
+        line-height: 1.16;
+        margin: 16px 0;
+    }
+
+    .hero-inner p {
+        font-size: 15px;
+        line-height: 1.55;
+        margin-bottom: 16px;
+    }
+
+    .search {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .search input,
+    .search #searchInput {
+        width: 100%;
+        height: 46px;
+        min-height: 46px;
+    }
+
+    .search button {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .tags {
+        gap: 8px;
+        margin-top: 14px;
+    }
+
+    .tags span {
+        padding: 8px 11px;
+        font-size: 13px;
+    }
+
+    .partners-page {
+        padding: 28px 16px;
+    }
+
+    .partners-page h1 {
+        font-size: 30px;
+    }
+
+    .partner-filters {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
+    }
+
+    .partners-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .partner-card {
+        padding: 20px;
+    }
+
+    .profile-container {
+        padding: 24px 12px;
+    }
+
+    .profile-card {
+        padding: 18px;
+    }
+
+    .profile-header {
+        align-items: flex-start;
+    }
+
+    .avatar-wrapper,
+    .profile-avatar {
+        width: 76px;
+        height: 76px;
+    }
+
+    .profile-header .edit-btn {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    #profile-form button {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .auth-container {
+        margin: 24px auto;
+    }
+}
+
+/* 11. Очень узкие телефоны */
+
+@media (max-width: 360px) {
+    .site-header .main-nav {
+        gap: 10px;
+    }
+
+    .site-header .main-nav a {
+        font-size: 13px;
+    }
+
+    .hero-inner h1 {
+        font-size: 28px;
+    }
+
+    .tags span {
+        padding: 7px 9px;
+        font-size: 12px;
+    }
+}
+
+/* ===== КОМПАКТНЫЙ ЗАГОЛОВОК НА ТЕЛЕФОНАХ ===== */
+
+@media (max-width: 600px) {
+    .hero-inner {
+        padding-top: 22px;
+        padding-bottom: 24px;
+    }
+
+    .hero-inner .eyebrow {
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        line-height: 1.4;
+        margin-bottom: 12px;
+    }
+
+    .hero-inner h1 {
+        font-size: clamp(25px, 6.5vw, 30px);
+        line-height: 1.15;
+        margin: 12px 0;
+        letter-spacing: -0.5px;
+    }
+
+    .hero-inner p {
+        font-size: 14px;
+        line-height: 1.45;
+        margin-bottom: 12px;
+    }
+
+    .search {
+        margin-top: 10px;
+    }
+
+    .tags {
+        margin-top: 12px;
+    }
+}
