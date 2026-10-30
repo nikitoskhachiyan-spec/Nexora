@@ -1,0 +1,70 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="public-profile">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            {% if profile and profile['avatar'] %}
+                <img src="{{ profile['avatar'] }}" alt="Аватар пользователя">
+            {% else %}
+                <div class="avatar-placeholder">👤</div>
+            {% endif %}
+        </div>
+
+        <div class="profile-info">
+            <h1>
+                {% if profile and profile['full_name'] %}
+                    {{ profile['full_name'] }}
+                {% else %}
+                    {{ user['username'] }}
+                {% endif %}
+            </h1>
+
+            <p class="profession">
+                {{ profile['profession'] or 'Профессия не указана' if profile else 'Профессия не указана' }}
+            </p>
+
+            <p>
+                {{ profile['about'] or 'Пользователь пока не добавил описание.' if profile else 'Пользователь пока не добавил описание.' }}
+            </p>
+        </div>
+    </div>
+
+    <section class="profile-section">
+        <h2>Навыки и технологии</h2>
+        {% if profile and profile['skills'] %}
+            <div class="skills-list">
+                {% for skill in profile['skills'].split(',') %}
+                    <span class="skill-tag">{{ skill.strip() }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Навыки пока не добавлены.</p>
+        {% endif %}
+    </section>
+
+    <section class="profile-section">
+        <h2>Портфолио</h2>
+        {% if profile and profile['portfolio_url'] %}
+            <a href="{{ profile['portfolio_url'] }}" target="_blank" rel="noopener noreferrer">
+                Посмотреть проекты
+            </a>
+        {% else %}
+            <p>Портфолио пока не добавлено.</p>
+        {% endif %}
+    </section>
+
+    {% if session.get('user_id') and session.get('user_id') != user['id'] %}
+        <section class="profile-section">
+            <h2>Сотрудничество</h2>
+            <form action="{{ url_for('collaborate', user_id=user['id']) }}" method="POST">
+                <label for="message">Предложение о сотрудничестве</label>
+                <textarea id="message" name="message"
+                          placeholder="Расскажи о своей идее..." required></textarea>
+                <button type="submit">Предложить сотрудничество</button>
+            </form>
+        </section>
+    {% endif %}
+</div>
+{% endblock %}

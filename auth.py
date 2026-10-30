@@ -21,6 +21,7 @@ def get_db():
 
 
 
+
 def init_auth_db():
     with get_db() as conn:
         conn.execute("""
@@ -43,9 +44,25 @@ def init_auth_db():
                 about TEXT DEFAULT '',
                 portfolio_url TEXT DEFAULT '',
                 avatar TEXT DEFAULT '',
+                projects TEXT DEFAULT '',
                 FOREIGN KEY (user_id) REFERENCES users(id)
             )
         """)
+
+        # Добавляем projects в существующую таблицу,
+        # если колонка ещё не существует.
+        columns = {
+            row["name"]
+            for row in conn.execute(
+                "PRAGMA table_info(profiles)"
+            ).fetchall()
+        }
+
+        if "projects" not in columns:
+            conn.execute(
+                "ALTER TABLE profiles ADD COLUMN projects TEXT DEFAULT ''"
+            )
+
 
 
 
