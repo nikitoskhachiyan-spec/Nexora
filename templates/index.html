@@ -1,46 +1,141 @@
+
 {% extends 'base.html' %}
 
-#глав страница
-
-{% block title %}
-
-{% endblock %}
+{% block title %}Nexora Assist — Найди свою команду{% endblock %}
 
 {% block content %}
-<div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-    <h1 class="display-4 fw-normal text-white"></h1>
-      <p class="fs-5 text-body-secondary"></p>
+
+<section class="nx-hero">
+    <div class="nx-orb nx-orb-one"></div>
+    <div class="nx-orb nx-orb-two"></div>
+
+    <div class="nx-hero-content">
+        <div class="nx-label">
+            <span class="nx-label-dot"></span>
+            ПЛАТФОРМА ДЛЯ IT-СПЕЦИАЛИСТОВ
+        </div>
+
+       <h1>
+    <span>Твой следующий проект.</span>
+</h1>
+
+        <p class="nx-description">
+            Находи разработчиков, дизайнеров и единомышленников.
+            Объединяй таланты и превращай идеи в реальные проекты
+            вместе с Nexora Assist.
+        </p>
+
+
+<form class="nx-search-simple" action="{{ url_for('partners') }}" method="get">
+    <input type="text" name="q" placeholder="Кого ты ищешь?">
+    <button type="submit">Найти</button>
+</form>
+
+
+
+
+
+
+        <div class="nx-tags">
+            <span>Популярные направления:</span>
+            <a href="{{ url_for('partners', q='Frontend') }}">Frontend</a>
+            <a href="{{ url_for('partners', q='Python') }}">Python</a>
+            <a href="{{ url_for('partners', q='UI/UX') }}">UI/UX</a>
+            <a href="{{ url_for('partners', q='Backend') }}">Backend</a>
+        </div>
     </div>
-<div class="hero-inner">
+
+    <div class="nx-hero-visual">
+        <div class="nx-visual-glow"></div>
+
+        <div class="nx-dashboard">
+            <div class="nx-dashboard-top">
+                <div>
+                    <span class="nx-mini-label">NEXORA WORKSPACE</span>
+                    <h3>Твоя следующая команда</h3>
+                </div>
+                <span class="nx-live"><i></i> ONLINE</span>
+            </div>
+
+            <div class="nx-project">
+                <div class="nx-project-icon">✦</div>
+                <div>
+                    <strong>Новый проект</strong>
+                    <p>Создавай что-то великое</p>
+                </div>
+                <span class="nx-project-arrow">↗</span>
+            </div>
+
+            <div class="nx-team-title">
+                <span>Собери команду мечты</span>
+                <span>01 — 04</span>
+            </div>
+
+            <div class="nx-team-list">
+                <div class="nx-team-member">
+                    <div class="nx-avatar nx-avatar-blue">FE</div>
+                    <div><strong>Frontend Developer</strong><small>Интерфейсы и веб</small></div>
+                    <span class="nx-member-status"></span>
+                </div>
+                <div class="nx-team-member">
+                    <div class="nx-avatar nx-avatar-purple">UI</div>
+                    <div><strong>UI/UX Designer</strong><small>Дизайн и идеи</small></div>
+                    <span class="nx-member-status"></span>
+                </div>
+                <div class="nx-team-member">
+                    <div class="nx-avatar nx-avatar-pink">PY</div>
+                    <div><strong>Python Developer</strong><small>Backend и логика</small></div>
+                    <span class="nx-member-status"></span>
+                </div>
+            </div>
+
+            <a class="nx-dashboard-link" href="{{ url_for('partners') }}">
+                Найти участников <span>→</span>
+            </a>
+        </div>
+
+
+    </div>
+</section>
+
+<section class="nx-features">
+    <div class="nx-section-heading">
+        <span class="nx-label">ПОЧЕМУ NEXORA</span>
+        <h2>Больше, чем просто поиск людей</h2>
+        <p>Всё необходимое, чтобы найти единомышленников и начать создавать.</p>
+    </div>
+
+    <div class="nx-feature-grid">
+        <article class="nx-feature-card">
+            <div class="nx-feature-icon">⌕</div>
+            <h3>Умный поиск</h3>
+            <p>Находи специалистов по навыкам, направлениям и формату сотрудничества.</p>
+            <a href="{{ url_for('partners') }}">Найти людей <span>→</span></a>
+        </article>
+
+        <article class="nx-feature-card">
+            <div class="nx-feature-icon">◈</div>
+            <h3>Твоя команда</h3>
+            <p>Знакомься с разработчиками, дизайнерами и создателями новых проектов.</p>
+            <a href="{{ url_for('partners') }}">Посмотреть участников <span>→</span></a>
+        </article>
+
+        <article class="nx-feature-card">
+            <div class="nx-feature-icon">✧</div>
+            <h3>Новые возможности</h3>
+            <p>Обменивайся идеями, находи партнёров и развивай собственные проекты.</p>
+            <a href="{{ url_for('about') }}">Узнать больше <span>→</span></a>
+        </article>
+    </div>
+</section>
+
+<section class="nx-bottom-cta">
     <div>
-      <div class="eyebrow">ПЛАТФОРМА ДЛЯ IT-СПЕЦИАЛИСТОВ</div>
-      <h1>Найди напарника<br>для своего <span>IT проекта</span></h1>
-      <p>Nexora Assist — платформа, где разработчики, дизайнеры, продукты и другие IT-специалисты находят единомышленников для реализации идей, стартапов и пет-проектов.</p>
-      <form class="search" action="{{ url_for('partners') }}" method="get">
-        <input
-    id="searchInput"
-    name="q"
-    placeholder="Кого ищем? Например, frontend, backend, дизайнер"
->
-        <select name="mode">
-    <option value="">Любой формат</option>
-    <option value="Онлайн">Онлайн</option>
-    <option value="Офлайн">Офлайн</option>
-</select>
-        <button>Найти напарника</button>
-      </form>
-      <div class="tags">
-        <span>Frontend</span><span>Backend</span><span>Fullstack</span><span>UI/UX</span><span>Product</span><span>DevOps</span><span>QA</span><span>Mobile</span>
-      </div>
+        <span class="nx-label">ТВОЯ ИДЕЯ ЖДЁТ</span>
+        <h2>Хватит откладывать.<br><span>Начни создавать.</span></h2>
+        <p>Найди тех, с кем сможешь воплотить свою идею.</p>
     </div>
+    <a href="{{ url_for('partners') }}">Найти напарника <span>→</span></a>
+</section>
 
-<div class="visual">
-    <div class="glow"></div>
-</div>
-
-<div class="visual">
-    <div class="glow"></div>
-</div>
-
-  </div>
 {% endblock %}

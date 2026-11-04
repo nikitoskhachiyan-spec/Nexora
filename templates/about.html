@@ -1,9 +1,78 @@
+
 {% extends 'base.html' %}
 
-{% block title %}
+{% block title %}Про нас — Nexora Assist{% endblock %}
 
-{% endblock %}
+{% block content %}
 
-{% block body %}
-<h1>стра нас</h1>
+<section class="nx-about-hero">
+    <div class="nx-about-label">О ПРОЕКТЕ NEXORA ASSIST</div>
+
+    <h1>
+        Создавать вместе<br>
+        <span>проще и интереснее.</span>
+    </h1>
+
+    <p>
+        Nexora Assist — место, где IT-специалисты могут
+        знакомиться, делиться опытом и находить людей
+        для совместной работы над проектами.
+    </p>
+</section>
+
+<section class="nx-about-story">
+    <div class="nx-about-heading">
+        <span>НАША ИДЕЯ</span>
+        <h2>Зачем нужен Nexora Assist?</h2>
+    </div>
+
+    <p>
+        Иногда для хорошего проекта не хватает не знаний,
+        а подходящих людей рядом. Разработчику нужен дизайнер,
+        автору идеи — программист, а начинающему специалисту —
+        команда, с которой можно получить опыт.
+    </p>
+
+    <p>
+        Мы хотим упростить знакомство между такими людьми.
+        Поэтому создали пространство, в котором можно рассказать
+        о себе, показать свои навыки и найти единомышленников.
+    </p>
+</section>
+
+<section class="nx-about-cards">
+    <article>
+        <div class="nx-about-icon">01</div>
+        <h3>Знакомься</h3>
+        <p>
+            Находи людей с похожими интересами
+            и направлениями в IT.
+        </p>
+    </article>
+
+    <article>
+        <div class="nx-about-icon">02</div>
+        <h3>Развивайся</h3>
+        <p>
+            Делись опытом, изучай новые технологии
+            и учись работать в команде.
+        </p>
+    </article>
+
+    <article>
+        <div class="nx-about-icon">03</div>
+        <h3>Создавай</h3>
+        <p>
+            Ищи партнёров для собственных идей,
+            пет-проектов и стартапов.
+        </p>
+    </article>
+</section>
+
+<section class="nx-about-bottom">
+    <h2>Есть идея?</h2>
+    <p>Возможно, именно здесь ты найдёшь людей, которые помогут её реализовать.</p>
+    <a href="{{ url_for('partners') }}">Найти напарника →</a>
+</section>
+
 {% endblock %}
