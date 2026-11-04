@@ -1,102 +1,438 @@
+
 {% extends "base.html" %}
 
-{% block title %}Найти напарника{% endblock %}
+{% block title %}Найти напарника — Nexora Assist{% endblock %}
 
 {% block content %}
 
+<style>
+.partners-page {
+    width: min(1200px, calc(100% - 36px));
+    margin: 0 auto;
+    padding: 34px 0 60px;
+    color: #edf0ff;
+}
+
+.partners-heading {
+    text-align: center;
+    margin: 0 0 30px;
+}
+
+.partners-heading h1 {
+    font-size: 34px;
+    margin: 0 0 10px;
+    color: #f8f9ff;
+}
+
+.partners-heading p {
+    color: #9da6c5;
+    line-height: 1.6;
+}
+
+.partner-filters {
+    background: #22263d;
+    border: 1px solid #343b5d;
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 26px;
+    box-shadow: 0 12px 32px rgba(0,0,0,.15);
+}
+
+.partner-search {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 14px;
+    padding: 14px 15px;
+    border: 1px solid #3b4367;
+    border-radius: 10px;
+    background: #191d32;
+    color: white;
+    font: inherit;
+}
+
+.partner-filter-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.45fr 1.2fr;
+    gap: 12px;
+    align-items: center;
+}
+
+.partner-filter-grid select {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 13px 12px;
+    border: 1px solid #3b4367;
+    border-radius: 10px;
+    background: #191d32;
+    color: #f4f6ff;
+    font: inherit;
+    cursor: pointer;
+}
+
+.partner-filter-grid select option {
+    background: #22263d;
+    color: white;
+    padding: 8px;
+}
+
+.partner-search:focus,
+.partner-filter-grid select:focus {
+    outline: none;
+    border-color: #7180ff;
+    box-shadow: 0 0 0 3px #6777ff24;
+}
+
+.partner-filter-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.partner-submit,
+.partner-reset {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.partner-submit {
+    border: 1px solid #596cf2;
+    background: #596cf2;
+    color: white;
+}
+
+.partner-submit:hover {
+    background: #7181ff;
+}
+
+.partner-reset {
+    border: 1px solid #414a70;
+    background: #303652;
+    color: #e3e7ff;
+}
+
+.partner-reset:hover {
+    background: #3a4263;
+}
+
+.partner-results {
+    color: #aab2ce;
+    margin-bottom: 16px;
+}
+
+.partner-results strong {
+    color: white;
+}
+
+.partners-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.partner-card {
+    display: block;
+    padding: 22px;
+    min-width: 0;
+    border: 1px solid #414968;
+    border-radius: 17px;
+    background: #22263d;
+    color: #e9ecff;
+    text-decoration: none;
+    box-shadow: 0 8px 24px #0002;
+    transition: .2s;
+}
+
+.partner-card:hover {
+    transform: translateY(-4px);
+    border-color: #7180ff;
+    background: #252a45;
+    color: white;
+}
+
+.partner-avatar {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    background: linear-gradient(135deg, #596cf2, #8065ee);
+    color: white;
+    font-size: 24px;
+    font-weight: 750;
+    overflow: hidden;
+}
+
+.partner-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.partner-card h2 {
+    font-size: 20px;
+    margin: 0 0 5px;
+    color: #f8f9ff;
+}
+
+.partner-role {
+    color: #91a0ff;
+    font-weight: 650;
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+
+.partner-detail {
+    margin: 8px 0;
+    color: #d7dcf1;
+    font-size: 14px;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+
+.partner-detail strong {
+    color: #aebaff;
+}
+
+.partner-open {
+    display: inline-block;
+    margin-top: 12px;
+    color: #91a0ff;
+    font-weight: 700;
+}
+
+.partner-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 42px 20px;
+    border: 1px solid #414968;
+    border-radius: 17px;
+    background: #22263d;
+}
+
+.partner-empty h2 {
+    color: white;
+    font-size: 20px;
+}
+
+.partner-empty p {
+    color: #aab2ce;
+    line-height: 1.6;
+}
+
+@media(max-width: 900px) {
+    .partners-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .partner-filter-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media(max-width: 600px) {
+    .partners-page {
+        padding-top: 25px;
+    }
+
+    .partners-heading h1 {
+        font-size: 28px;
+    }
+
+    .partner-filters {
+        padding: 15px;
+    }
+
+    .partner-filter-grid,
+    .partners-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .partner-filter-actions {
+        flex-direction: column;
+    }
+
+    .partner-submit,
+    .partner-reset {
+        width: 100%;
+    }
+}
+</style>
 
 <section class="partners-page">
 
-    <h1>Найти напарника</h1>
+    <header class="partners-heading">
+        <h1>Найти напарника</h1>
+        <p>
+            Найди единомышленников для совместной работы
+            над интересными проектами.
+        </p>
+    </header>
 
+    <form action="{{ url_for('partners') }}"
+          method="get"
+          class="partner-filters">
 
-<form action="{{ url_for('partners') }}" method="get" class="partner-filters">
+        <input
+            class="partner-search"
+            type="search"
+            name="q"
+            value="{{ query }}"
+            placeholder="Поиск по имени, профессии, навыкам или проекту..."
+            autocomplete="off"
+        >
 
-    <input
-        type="search"
-        name="q"
-        value="{{ query }}"
-        placeholder="Имя, навыки или проект..."
-        autocomplete="off"
-    >
+        <div class="partner-filter-grid">
 
-    <label for="specialization">Специализация</label>
-    <select name="specialization" id="specialization">
-        <option value="">Все специализации</option>
-        {% for item in ["Frontend", "Backend", "Fullstack", "UI/UX", "Mobile", "QA", "DevOps"] %}
-        <option value="{{ item }}" {% if specialization == item %}selected{% endif %}>
-            {{ item }}
-        </option>
-        {% endfor %}
-    </select>
+            <select name="specialization">
+                <option value="">Все специализации</option>
+                {% for item in [
+                    "Frontend", "Backend", "Fullstack",
+                    "UI/UX", "Mobile", "QA", "DevOps",
+                    "Data Science", "Machine Learning",
+                    "Cybersecurity", "Game Development"
+                ] %}
+                    <option value="{{ item }}"
+                        {% if specialization|lower == item|lower %}selected{% endif %}>
+                        {{ item }}
+                    </option>
+                {% endfor %}
+            </select>
 
-    <label for="experience">Опыт</label>
-    <select name="experience" id="experience">
-        <option value="">Любой опыт</option>
-        {% for item in ["Начинающий", "Средний", "Опытный"] %}
-        <option value="{{ item }}" {% if experience == item %}selected{% endif %}>
-            {{ item }}
-        </option>
-        {% endfor %}
-    </select>
+            <select name="experience">
+                <option value="">Любой опыт</option>
+                {% for item in ["Начинающий", "Средний", "Опытный"] %}
+                    <option value="{{ item }}"
+                        {% if experience|lower == item|lower %}selected{% endif %}>
+                        {{ item }}
+                    </option>
+                {% endfor %}
+            </select>
 
-    <label for="mode">Формат работы</label>
-    <select name="mode" id="mode">
-        <option value="">Любой формат</option>
-        {% for item in ["Онлайн", "Офлайн"] %}
-        <option value="{{ item }}" {% if mode == item %}selected{% endif %}>
-            {{ item }}
-        </option>
-        {% endfor %}
-    </select>
+            <select name="language">
+                <option value="">Любой язык</option>
+                {% for item in [
+                    "Python", "JavaScript", "TypeScript",
+                    "Java", "C", "C++", "C#", "Go",
+                    "Rust", "PHP", "Ruby", "Swift",
+                    "Kotlin", "Dart", "R", "Scala",
+                    "Perl", "Lua", "Objective-C",
+                    "Visual Basic", "Assembly",
+                    "Haskell", "Elixir", "Erlang",
+                    "Clojure", "F#", "Fortran",
+                    "COBOL", "Julia", "MATLAB",
+                    "Groovy", "Bash", "PowerShell",
+                    "SQL", "HTML", "CSS"
+                ] %}
+                    <option value="{{ item }}"
+                        {% if language|lower == item|lower %}selected{% endif %}>
+                        {{ item }}
+                    </option>
+                {% endfor %}
+            </select>
 
-    <label for="language">Язык программирования</label>
-    <select name="language" id="language">
-        <option value="">Любой язык</option>
-        {% for item in ["Python", "JavaScript", "Java", "Dart", "C#"] %}
-        <option value="{{ item }}" {% if language == item %}selected{% endif %}>
-            {{ item }}
-        </option>
-        {% endfor %}
-    </select>
+            <select name="project_type">
+                <option value="">Любой проект</option>
+                {% for item in [
+                    "Веб-сайт", "Мобильное приложение",
+                    "Telegram-бот", "Игра", "Дизайн",
+                    "Интернет-магазин", "API",
+                    "Desktop-приложение", "Другое"
+                ] %}
+                    <option value="{{ item }}"
+                        {% if project_type|lower == item|lower %}selected{% endif %}>
+                        {{ item }}
+                    </option>
+                {% endfor %}
+            </select>
 
-    <label for="project_type">Тип проекта</label>
-    <select name="project_type" id="project_type">
-        <option value="">Любой проект</option>
-        {% for item in ["Веб-сайт", "Мобильное приложение", "Telegram-бот", "Игра", "Дизайн"] %}
-        <option value="{{ item }}" {% if project_type == item %}selected{% endif %}>
-            {{ item }}
-        </option>
-        {% endfor %}
-    </select>
+        </div>
 
-    <button type="submit">Применить фильтры</button>
+        <div class="partner-filter-actions">
+            <button class="partner-submit" type="submit">
+                Найти напарника
+            </button>
 
-    <a href="{{ url_for('partners') }}">Сбросить</a>
+            <a class="partner-reset" href="{{ url_for('partners') }}">
+                Сбросить фильтры
+            </a>
+        </div>
 
-</form>
+    </form>
 
-
-    <p>Найдено специалистов: {{ partners|length }}</p>
+    <p class="partner-results">
+        Найдено напарников:
+        <strong>{{ partners|length }}</strong>
+    </p>
 
     <div class="partners-grid">
+
         {% for partner in partners %}
-        <div class="partner-card">
-            <div class="partner-avatar">
-                {{ partner.name[0] }}
+
+            <a class="partner-card"
+               href="{{ url_for('user_profile', user_id=partner.id) }}">
+
+                <div class="partner-avatar">
+                    {% if partner.avatar %}
+                        <img
+                            src="{{ url_for('static', filename=partner.avatar) }}"
+                            alt="Аватар"
+                        >
+                    {% else %}
+                        {{ (partner.name or '?')[0]|upper }}
+                    {% endif %}
+                </div>
+
+                <h2>{{ partner.name }}</h2>
+
+                <div class="partner-role">
+                    {{ partner.role }}
+                </div>
+
+                <p class="partner-detail">
+                    <strong>Навыки:</strong> {{ partner.skills }}
+                </p>
+
+                <p class="partner-detail">
+                    <strong>Опыт:</strong> {{ partner.experience }}
+                </p>
+
+                <p class="partner-detail">
+                    <strong>Проект:</strong> {{ partner.project }}
+                </p>
+
+                <span class="partner-open">
+                    Посмотреть профиль →
+                </span>
+
+            </a>
+
+        {% else %}
+
+            <div class="partner-empty">
+                <h2>Пока нет подходящих напарников</h2>
+                <p>
+                    Пользователи с заполненными профилями,
+                    подходящие под выбранные фильтры, появятся здесь.
+                </p>
             </div>
 
-            <h2>{{ partner.name }}</h2>
-            <p>{{ partner.role }}</p>
-            <p><strong>Навыки:</strong> {{ partner.skills }}</p>
-            <p><strong>Проект:</strong> {{ partner.project }}</p>
-        </div>
-        {% else %}
-        <p>Никого не нашли. Попробуй другой запрос.</p>
         {% endfor %}
+
     </div>
 
 </section>
-
 
 {% endblock %}

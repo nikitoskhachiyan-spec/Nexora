@@ -1,112 +1,468 @@
-
 {% extends "base.html" %}
 
+{% block title %}Мой профиль — Nexora Assist{% endblock %}
+
 {% block content %}
-<div class="profile-container">
-  <div class="profile-card">
 
-    <div class="profile-header">
-      <div class="avatar-wrapper">
-        {% if profile.avatar %}
-          <img src="{{ url_for('static', filename=profile.avatar) }}"
-               alt="Аватар" class="profile-avatar">
-        {% else %}
-          <div class="profile-avatar avatar-placeholder">
-            {{ (profile.full_name or username)[0] | upper }}
-          </div>
-        {% endif %}
-      </div>
 
-      <div class="profile-info">
-        <h1 class="profile-name">
-          {{ profile.full_name or username }}
-        </h1>
+<style>
+/* ОСНОВА */
+.profile-page {
+    width: min(1000px, calc(100% - 40px));
+    margin: 55px auto 80px;
+    color: #f4f5ff;
+    font-family: Arial, sans-serif;
+}
+
+/* КАРТОЧКА ПРОФИЛЯ */
+.profile-card {
+    padding: 42px;
+    border: 1px solid rgba(139, 126, 255, 0.2);
+    border-radius: 24px;
+    background: linear-gradient(145deg, #20243e, #191d32);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+/* ШАПКА ПРОФИЛЯ */
+.profile-top {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid #353b5b;
+}
+
+.profile-avatar {
+    width: 105px;
+    height: 105px;
+    flex: 0 0 105px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #596cf2, #9664f5);
+    color: white;
+    font-size: 45px;
+    font-weight: 800;
+    box-shadow: 0 8px 25px rgba(105, 91, 255, 0.3);
+    overflow: hidden;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-identity {
+    min-width: 0;
+    flex: 1;
+}
+
+.profile-identity h1 {
+    margin: 0 0 10px;
+    color: #fff;
+    font-size: 32px;
+    font-weight: 750;
+    letter-spacing: -0.5px;
+}
+
+.profile-role {
+    margin: 0;
+    color: #a9b1d4;
+    font-size: 16px;
+}
+
+/* КНОПКА РЕДАКТИРОВАНИЯ */
+.profile-edit-toggle {
+    padding: 12px 22px;
+    border: 1px solid #7770e9;
+    border-radius: 11px;
+    background: rgba(103, 94, 230, 0.12);
+    color: #c3c5ff;
+    font-size: 14px;
+    font-weight: 650;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.profile-edit-toggle:hover {
+    background: #655cf0;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(101, 92, 240, .25);
+}
+
+/* СЕКЦИИ */
+.profile-section {
+    padding: 28px 0;
+    border-bottom: 1px solid #353b5b;
+}
+
+.profile-section:last-of-type {
+    border-bottom: none;
+}
+
+.profile-section h2 {
+    margin: 0 0 13px;
+    color: #fff;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.profile-section p {
+    margin: 0;
+    color: #b9c0dc;
+    font-size: 15px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+}
+
+/* НАВЫКИ */
+.profile-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.profile-skill {
+    padding: 9px 17px;
+    border: 1px solid rgba(129, 111, 255, .45);
+    border-radius: 30px;
+    background: rgba(112, 91, 237, .15);
+    color: #c9c4ff;
+    font-size: 14px;
+    font-weight: 600;
+    transition: .2s;
+}
+
+.profile-skill:hover {
+    background: rgba(112, 91, 237, .3);
+    transform: translateY(-2px);
+}
+
+/* ССЫЛКИ */
+.profile-link {
+    color: #9e9aff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: .2s;
+}
+
+.profile-link:hover {
+    color: #c5baff;
+}
+
+/* ФОРМА РЕДАКТИРОВАНИЯ */
+.profile-form {
+    margin-top: 30px;
+    padding: 30px;
+    border: 1px solid #3b4265;
+    border-radius: 18px;
+    background: rgba(15, 19, 38, .45);
+}
+
+.profile-form[hidden] {
+    display: none;
+}
+
+.profile-form h2 {
+    margin: 0 0 24px;
+    color: #fff;
+    font-size: 23px;
+}
+
+.profile-form label {
+    display: block;
+    margin: 19px 0 9px;
+    color: #c5cbe5;
+    font-size: 14px;
+    font-weight: 650;
+}
+
+.profile-form input,
+.profile-form textarea,
+.profile-form select {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    border: 1px solid #414969;
+    border-radius: 11px;
+    outline: none;
+    background: #171b30;
+    color: #f4f5ff;
+    font-family: inherit;
+    font-size: 15px;
+    transition: .2s;
+}
+
+.profile-form textarea {
+    min-height: 125px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.profile-form input::placeholder,
+.profile-form textarea::placeholder {
+    color: #777f9f;
+}
+
+.profile-form input:focus,
+.profile-form textarea:focus,
+.profile-form select:focus {
+    border-color: #8175ff;
+    box-shadow: 0 0 0 3px rgba(129, 117, 255, .15);
+    background: #1b2038;
+}
+
+/* КНОПКИ ФОРМЫ */
+.profile-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 27px;
+}
+
+.profile-save,
+.profile-cancel {
+    padding: 13px 23px;
+    border-radius: 11px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.profile-save {
+    border: 1px solid #675df2;
+    background: linear-gradient(135deg, #596cf2, #8065ed);
+    color: #fff;
+}
+
+.profile-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(89, 108, 242, .3);
+}
+
+.profile-cancel {
+    border: 1px solid #454c6b;
+    background: #292f49;
+    color: #d9def5;
+}
+
+.profile-cancel:hover {
+    background: #383f5d;
+}
+
+/* АДАПТИВНОСТЬ */
+@media (max-width: 700px) {
+    .profile-page {
+        width: calc(100% - 24px);
+        margin: 25px auto 45px;
+    }
+
+    .profile-card {
+        padding: 23px 19px;
+        border-radius: 18px;
+    }
+
+    .profile-top {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .profile-avatar {
+        width: 75px;
+        height: 75px;
+        flex-basis: 75px;
+        font-size: 32px;
+    }
+
+    .profile-identity h1 {
+        font-size: 24px;
+    }
+
+    .profile-edit-toggle {
+        width: 100%;
+    }
+
+    .profile-form {
+        padding: 20px 15px;
+    }
+
+    .profile-form-actions {
+        flex-direction: column;
+    }
+
+    .profile-save,
+    .profile-cancel {
+        width: 100%;
+    }
+}
+</style>
+
+
+<div class="profile-page">
+
+    <form method="POST" action="{{ url_for('profile') }}" class="profile-card" id="profileForm">
+
+        <div class="profile-top">
+            <div class="profile-avatar">
+                {{ (profile.full_name or username or 'U')[0]|upper if profile else 'U' }}
+            </div>
+
+            <div class="profile-identity">
+    <div class="view-mode">
+        <h1>{{ profile.full_name if profile and profile.full_name else username }}</h1>
         <p class="profile-role">
-          {{ profile.profession or 'Профессия не указана' }}
+            {{ profile.profession if profile and profile.profession else 'Профессия не указана' }}
         </p>
-      </div>
-
-      <button class="edit-btn" type="button"
-              onclick="document.getElementById('profile-form').hidden = false; this.hidden = true;">
-        Редактировать
-      </button>
     </div>
 
-    <div class="profile-section">
-      <h3>О себе</h3>
-      <p class="profile-bio">
-        {{ profile.about or 'Пока ничего не рассказано о себе.' }}
-      </p>
+    <div class="edit-mode" hidden>
+        <input type="text" name="full_name"
+               value="{{ profile.full_name if profile else '' }}"
+               placeholder="Ваше имя">
+
+        <input type="text" name="profession"
+               value="{{ profile.profession if profile else '' }}"
+               placeholder="Например, Python-разработчик">
     </div>
-
-    <div class="profile-section">
-      <h3>Навыки</h3>
-      <div class="skills-list">
-        {% for skill in profile.skills.split(',') if skill.strip() %}
-          <span class="skill-tag">{{ skill.strip() }}</span>
-        {% else %}
-          <span>Навыки пока не указаны.</span>
-        {% endfor %}
-      </div>
-    </div>
-
-    {% if profile.experience %}
-    <div class="profile-section">
-      <h3>Опыт</h3>
-      <p>{{ profile.experience }}</p>
-    </div>
-    {% endif %}
-
-    {% if profile.portfolio_url %}
-    <div class="profile-section">
-      <h3>GitHub / Портфолио</h3>
-      <a href="{{ profile.portfolio_url }}" target="_blank"
-         rel="noopener noreferrer">
-        Открыть портфолио
-      </a>
-    </div>
-    {% endif %}
-
-    <form id="profile-form" method="POST" hidden>
-      <div class="profile-section">
-        <h3>Редактирование профиля</h3>
-
-        <label for="full_name">Имя и фамилия</label>
-        <input id="full_name" name="full_name" maxlength="100"
-               value="{{ profile.full_name or '' }}">
-
-        <label for="profession">Профессия</label>
-        <input id="profession" name="profession" maxlength="100"
-               value="{{ profile.profession or '' }}">
-
-        <label for="skills">Навыки через запятую</label>
-        <input id="skills" name="skills" maxlength="500"
-               value="{{ profile.skills or '' }}"
-               placeholder="Python, Flask, HTML, CSS">
-
-        <label for="experience">Опыт</label>
-        <input id="experience" name="experience" maxlength="100"
-               value="{{ profile.experience or '' }}"
-               placeholder="Например, начинающий">
-
-        <label for="about">О себе</label>
-        <textarea id="about" name="about" maxlength="2000"
-                  rows="5">{{ profile.about or '' }}</textarea>
-
-        <label for="portfolio_url">GitHub или портфолио (ссылка)</label>
-        <input id="portfolio_url" name="portfolio_url" type="url"
-               maxlength="300"
-               value="{{ profile.portfolio_url or '' }}"
-               placeholder="https://github.com/username">
-
-        <button class="edit-btn" type="submit">Сохранить</button>
-        <button type="button" class="edit-btn"
-                onclick="document.getElementById('profile-form').hidden = true; document.querySelector('.edit-btn').hidden = false;">
-          Отмена
-        </button>
-      </div>
-    </form>
-
-  </div>
 </div>
+
+            <button type="button" class="profile-edit-toggle" id="editButton">
+                Редактировать
+            </button>
+        </div>
+
+        <div class="profile-section">
+            <h2>О себе</h2>
+            <p class="view-mode">{{ profile.about if profile and profile.about else 'Пока ничего не рассказано о себе.' }}</p>
+            <div class="edit-mode" hidden>
+                <textarea name="about" placeholder="Расскажите о себе">{{ profile.about if profile else '' }}</textarea>
+            </div>
+        </div>
+
+        <div class="profile-section">
+    <h2>Портфолио</h2>
+
+    <div class="view-mode">
+        {% if profile and profile.portfolio_url %}
+            <a class="profile-link"
+               href="{{ profile.portfolio_url }}"
+               target="_blank">
+                Открыть портфолио →
+            </a>
+        {% else %}
+            <p>Ссылка не добавлена.</p>
+        {% endif %}
+    </div>
+
+    <div class="edit-mode" hidden>
+        <input type="url"
+               name="portfolio_url"
+               value="{{ profile.portfolio_url if profile else '' }}"
+               placeholder="https://github.com/username">
+    </div>
+</div>
+
+        <div class="profile-section">
+            <h2>Опыт</h2>
+            <p class="view-mode">{{ profile.experience if profile and profile.experience else 'Опыт не указан' }}</p>
+            <div class="edit-mode" hidden>
+                <select name="experience">
+                    <option value="">Выберите опыт</option>
+                    <option value="Начинающий" {% if profile and profile.experience == 'Начинающий' %}selected{% endif %}>Начинающий</option>
+                    <option value="Средний" {% if profile and profile.experience == 'Средний' %}selected{% endif %}>Средний</option>
+                    <option value="Опытный" {% if profile and profile.experience == 'Опытный' %}selected{% endif %}>Опытный</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <h2>Проекты</h2>
+            <p class="view-mode">{{ profile.projects if profile and profile.projects else 'Проекты пока не добавлены.' }}</p>
+            <div class="edit-mode" hidden>
+                <textarea name="projects" placeholder="Расскажите о своих проектах">{{ profile.projects if profile else '' }}</textarea>
+            </div>
+        </div>
+
+        <div class="profile-section">
+    <h2>Навыки</h2>
+
+    <div class="view-mode profile-skills">
+        {% if profile and profile.skills %}
+            {% for skill in profile.skills.split(',') %}
+                <span class="profile-skill">{{ skill.strip() }}</span>
+            {% endfor %}
+        {% else %}
+            <p>Навыки пока не указаны.</p>
+        {% endif %}
+    </div>
+
+    <div class="edit-mode" hidden>
+        {% set selected_skills = profile.skills.split(',') if profile and profile.skills else [] %}
+
+        <p class="skills-hint">Нажимай на навыки, чтобы выбрать или отменить выбор.</p>
+
+        <div class="skills-grid">
+            {% for skill in [
+                'Python', 'Java', 'JavaScript', 'TypeScript',
+                'C', 'C++', 'C#', 'Go', 'Rust', 'PHP',
+                'Ruby', 'Swift', 'Kotlin', 'Dart',
+                'HTML', 'CSS', 'SQL', 'R', 'Scala',
+                'React', 'Vue.js', 'Angular', 'Node.js',
+                'Flask', 'Django', 'FastAPI', 'Spring',
+                '.NET', 'ASP.NET', 'MySQL', 'PostgreSQL',
+                'SQLite', 'MongoDB', 'Git', 'Docker',
+                'Linux', 'Figma'
+            ] %}
+                <label class="skill-option">
+                    <input type="checkbox"
+                           name="skills"
+                           value="{{ skill }}"
+                           {% if skill in selected_skills %}checked{% endif %}>
+                    <span>{{ skill }}</span>
+                </label>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+        </div>
+
+        <div class="profile-form-actions edit-mode" hidden>
+            <button type="submit" class="profile-save">Сохранить изменения</button>
+            <button type="button" class="profile-cancel" id="cancelButton">Отмена</button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+const editButton = document.getElementById('editButton');
+const cancelButton = document.getElementById('cancelButton');
+const form = document.getElementById('profileForm');
+
+function setEditMode(enabled) {
+    form.querySelectorAll('.view-mode').forEach(element => {
+        element.hidden = enabled;
+    });
+
+    form.querySelectorAll('.edit-mode').forEach(element => {
+        element.hidden = !enabled;
+    });
+
+    editButton.hidden = enabled;
+}
+
+editButton.addEventListener('click', () => {
+    setEditMode(true);
+});
+
+cancelButton.addEventListener('click', () => {
+    window.location.reload();
+});
+</script>
+
+
 {% endblock %}

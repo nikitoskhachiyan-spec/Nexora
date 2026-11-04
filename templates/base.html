@@ -1,11 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{% block title %} Assist{% endblock %}</title>
+    <title>{% block title %}Nexora Assist{% endblock %}</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='scc/main.css') }}">
@@ -14,7 +14,7 @@
 <body>
 
 <header class="site-header">
-    <!-- Логотип -->
+
     <a href="{{ url_for('index') }}" class="brand">
         <img
             src="{{ url_for('static', filename='nexora-icon.png') }}"
@@ -24,16 +24,15 @@
         <span>Nexora Assist</span>
     </a>
 
-    <!-- Основное меню -->
     <nav class="main-nav">
         <a href="{{ url_for('index') }}">Главная</a>
         <a href="{{ url_for('about') }}">Про нас</a>
         <a href="{{ url_for('profile') }}">Профиль</a>
-        <a href="partners.html">Найти напарника</a>
+        <a href="{{ url_for('partners') }}">Найти напарника</a>
     </nav>
 
-    <!-- Авторизация -->
     <div class="auth-buttons">
+
         {% if session.get('user_id') %}
 
             <span class="nav-user">
@@ -63,12 +62,65 @@
             </a>
 
         {% endif %}
+
     </div>
+
 </header>
 
 <main>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            <div class="flash-messages">
+
+                {% for category, message in messages %}
+
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
     {% block content %}{% endblock %}
+
 </main>
+
+<style>
+.flash-messages {
+    width: min(900px, calc(100% - 32px));
+    margin: 16px auto 0;
+}
+
+.flash-message {
+    padding: 12px 16px;
+    margin: 8px 0;
+    border-radius: 10px;
+    background: #252a45;
+    border: 1px solid #414968;
+    color: #edf0ff;
+}
+
+.flash-message.success {
+    border-color: #347a63;
+}
+
+.flash-message.error {
+    border-color: #a34b65;
+}
+
+.logout-form {
+    display: inline-flex;
+    margin: 0;
+}
+</style>
 
 </body>
 </html>

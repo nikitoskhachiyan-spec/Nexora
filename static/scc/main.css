@@ -2472,3 +2472,402 @@ a {
         font-size: 26px;
     }
 }
+/* ===== Исправление дизайна страницы партнёров ===== */
+
+body {
+    background: #171a2b;
+    color: #f5f6ff;
+}
+
+h1 {
+    color: #ffffff !important;
+}
+
+.partners-page,
+.partners-container {
+    color: #f5f6ff;
+}
+
+.partners-page p,
+.partners-container p {
+    color: #aeb5ce;
+}
+
+/* Форма поиска */
+.search-form,
+.filters,
+.filter-form {
+    background: #22263d !important;
+    border: 1px solid #343a5b;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+}
+
+.search-form input,
+.search-form select,
+.filters input,
+.filters select,
+.filter-form input,
+.filter-form select {
+    background: #171a2b !important;
+    color: #ffffff !important;
+    border: 1px solid #414766 !important;
+    border-radius: 10px;
+    padding: 13px 16px;
+}
+
+input::placeholder {
+    color: #929ab7;
+}
+
+select option {
+    background: #22263d;
+    color: white;
+}
+
+/* Кнопки */
+button,
+.search-form button,
+.filters button,
+.filter-form button {
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button[type="submit"] {
+    background: #5969f5;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background: #7180ff;
+    transform: translateY(-2px);
+}
+
+/* Карточки */
+.partner-card {
+    display: block;
+    background: #22263d !important;
+    color: #ffffff !important;
+    border: 1px solid #343a5b;
+    border-radius: 18px;
+    padding: 24px;
+    text-decoration: none !important;
+    transition: 0.25s ease;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.partner-card:hover {
+    transform: translateY(-5px);
+    border-color: #6878ff;
+    box-shadow: 0 12px 30px rgba(80, 100, 255, 0.16);
+}
+
+.partner-card h3,
+.partner-card h2,
+.partner-card strong {
+    color: #ffffff;
+}
+
+.partner-card p {
+    color: #c2c8df;
+}
+
+.partner-card .specialization {
+    color: #8190ff;
+}
+
+/* Количество найденных */
+.partners-count,
+.results-count {
+    color: #aeb5ce;
+}
+
+/* Если партнёров нет */
+.no-partners {
+    background: #22263d;
+    color: #c2c8df;
+    border: 1px solid #343a5b;
+    border-radius: 16px;
+    padding: 30px;
+}
+
+/* Адаптация под телефон */
+@media (max-width: 768px) {
+    .partner-card {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .search-form,
+    .filters,
+    .filter-form {
+        padding: 16px;
+    }
+}
+/* Исправляем форму поиска */
+main form,
+.partners-container form {
+    background: #22263d !important;
+    border: 1px solid #343a5b !important;
+    border-radius: 18px;
+    padding: 24px;
+}
+
+/* Исправляем текст внутри карточек */
+.partner-card,
+.partner-card p,
+.partner-card span,
+.partner-card strong {
+    color: #e8ebff !important;
+}
+
+/* Названия полей карточки */
+.partner-card p strong,
+.partner-card p b {
+    color: #aeb8ff !important;
+}
+
+/* Текст специализации */
+.partner-card h3,
+.partner-card .specialization {
+    color: #8190ff !important;
+}
+
+/* Поля поиска */
+main form input,
+main form select {
+    background: #171a2b !important;
+    color: #ffffff !important;
+    border: 1px solid #414766 !important;
+}
+
+/* Кнопка поиска */
+main form button[type="submit"] {
+    background: #5969f5 !important;
+    color: white !important;
+}
+
+/* Сброс фильтров */
+main form button[type="reset"] {
+    background: #343a55 !important;
+    color: white !important;
+}
+/* Большие поля редактирования */
+.profile-card textarea {
+    width: 100%;
+    min-height: 170px;
+    padding: 16px;
+    box-sizing: border-box;
+    resize: vertical;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Большой список навыков */
+.skills-select {
+    width: 100%;
+    min-height: 240px;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid #555b85;
+    border-radius: 12px;
+    background: #171b30;
+    color: white;
+    font-size: 15px;
+}
+
+.skills-select option {
+    padding: 9px;
+}
+
+.skills-select option:checked {
+    background: #655cf0 linear-gradient(0deg, #655cf0, #655cf0);
+    color: white;
+}
+
+.profile-card textarea:focus,
+.skills-select:focus {
+    outline: none;
+    border-color: #8175ff;
+    box-shadow: 0 0 0 3px rgba(129, 117, 255, .15);
+}
+/* Имя и профессия */
+.profile-identity .edit-mode {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.profile-identity input {
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 15px;
+    box-sizing: border-box;
+    border: 1px solid #555b85;
+    border-radius: 10px;
+    background: #171b30;
+    color: white;
+    font-size: 16px;
+}
+
+/* Большие поля */
+.profile-card textarea {
+    width: 100%;
+    min-height: 190px;
+    padding: 16px;
+    box-sizing: border-box;
+    border: 1px solid #555b85;
+    border-radius: 12px;
+    background: #171b30;
+    color: white;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Ссылка на портфолио */
+.profile-card input[type="url"] {
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 15px;
+    box-sizing: border-box;
+    border: 1px solid #555b85;
+    border-radius: 10px;
+    background: #171b30;
+    color: white;
+    font-size: 15px;
+}
+
+/* Сетка навыков */
+.skills-hint {
+    color: #aeb5d5;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.skill-option {
+    cursor: pointer;
+}
+
+.skill-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.skill-option span {
+    display: block;
+    padding: 13px 10px;
+    border: 1px solid #414969;
+    border-radius: 10px;
+    background: #171b30;
+    color: #c4cbe7;
+    text-align: center;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.skill-option input:checked + span {
+    background: #6259dc;
+    border-color: #9288ff;
+    color: white;
+    box-shadow: 0 3px 12px rgba(98, 89, 220, .25);
+}
+
+.skill-option:hover span {
+    border-color: #9288ff;
+}
+
+/* Адаптация */
+@media (max-width: 650px) {
+    .skills-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+/* Исправление размеров фильтров */
+.partners-filters {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Строка поиска занимает всю ширину */
+.partners-filters input[type="text"],
+.partners-filters input[name="q"] {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+/* Выпадающие списки */
+.partners-filters select {
+    width: 100%;
+    min-width: 0;
+    height: 48px;
+    padding: 0 12px;
+    font-size: 15px;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+/* Кнопки */
+.partners-filters button {
+    min-height: 44px;
+    padding: 0 20px;
+}
+
+/* Адаптация под маленькие экраны */
+@media (max-width: 750px) {
+    .partners-filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .partners-filters {
+        grid-template-columns: 1fr;
+    }
+
+    .partners-filters input[type="text"],
+    .partners-filters input[name="q"] {
+        grid-column: auto;
+    }
+}
+
+html, body {
+    background: #101329 !important;
+    color: #f4f5fb !important;
+}
+
+body {
+    background:
+        radial-gradient(
+            ellipse at 76% 15%,
+            rgba(101, 116, 255, 0.22),
+            transparent 38%
+        ),
+        radial-gradient(
+            ellipse at 10% 50%,
+            rgba(138, 108, 240, 0.13),
+            transparent 35%
+        ),
+        #101329 !important;
+    background-attachment: fixed;
+}
+
+main {
+    background: transparent !important;
+}

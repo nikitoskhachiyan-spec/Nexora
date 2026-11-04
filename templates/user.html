@@ -1,70 +1,323 @@
-
 {% extends "base.html" %}
 
+{% block title %}
+Профиль {{ (profile['full_name'] if profile and profile['full_name'] else user['username']) }}
+— Nexora Assist
+{% endblock %}
+
 {% block content %}
-<div class="public-profile">
-    <div class="profile-header">
-        <div class="profile-avatar">
-            {% if profile and profile['avatar'] %}
-                <img src="{{ profile['avatar'] }}" alt="Аватар пользователя">
-            {% else %}
-                <div class="avatar-placeholder">👤</div>
-            {% endif %}
-        </div>
 
-        <div class="profile-info">
-            <h1>
-                {% if profile and profile['full_name'] %}
-                    {{ profile['full_name'] }}
+<style>
+.public-page {
+    width: min(850px, calc(100% - 32px));
+    margin: 42px auto 70px;
+    color: #edf0ff;
+}
+
+.public-card {
+    padding: 36px;
+    border: 1px solid #343b5d;
+    border-radius: 20px;
+    background: #1e223a;
+    box-shadow: 0 16px 40px #0002;
+}
+
+.public-top {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding-bottom: 26px;
+    border-bottom: 1px solid #343b5d;
+}
+
+.public-avatar {
+    width: 90px;
+    height: 90px;
+    flex: 0 0 90px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #596cf2, #8065ee);
+    color: #fff;
+    font-size: 42px;
+    font-weight: 750;
+    overflow: hidden;
+}
+
+.public-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.public-identity {
+    flex: 1;
+    min-width: 0;
+}
+
+.public-identity h1 {
+    margin: 0 0 7px;
+    color: #fff;
+    font-size: 29px;
+}
+
+.public-role {
+    margin: 0;
+    color: #aab5df;
+}
+
+.public-section {
+    padding: 22px 0;
+    border-bottom: 1px solid #343b5d;
+}
+
+.public-section:last-child {
+    border-bottom: 0;
+}
+
+.public-section h2 {
+    font-size: 17px;
+    margin: 0 0 10px;
+    color: #fff;
+}
+
+.public-section p {
+    margin: 0;
+    color: #d7dcf1;
+    line-height: 1.65;
+    white-space: pre-wrap;
+}
+
+.public-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.public-skill {
+    padding: 7px 13px;
+    border: 1px solid #5b55ad;
+    border-radius: 30px;
+    background: #302d58;
+    color: #dfe2ff;
+    font-size: 13px;
+}
+
+.public-link {
+    color: #9ba8ff;
+    text-decoration: none;
+}
+
+.public-link:hover {
+    text-decoration: underline;
+}
+
+.collab-form label {
+    display: block;
+    margin: 10px 0 8px;
+    color: #cbd2ef;
+}
+
+.collab-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 110px;
+    padding: 12px 14px;
+    border: 1px solid #414968;
+    border-radius: 10px;
+    background: #171b30;
+    color: #fff;
+    font: inherit;
+    resize: vertical;
+}
+
+.collab-form button {
+    margin-top: 12px;
+    padding: 12px 18px;
+    border: 0;
+    border-radius: 10px;
+    background: #596cf2;
+    color: #fff;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.collab-form button:hover {
+    background: #7181ff;
+}
+
+@media(max-width:600px) {
+    .public-page {
+        margin: 24px auto 45px;
+    }
+
+    .public-card {
+        padding: 22px 18px;
+    }
+
+    .public-top {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .public-avatar {
+        width: 68px;
+        height: 68px;
+        flex-basis: 68px;
+        font-size: 32px;
+    }
+
+    .public-identity h1 {
+        font-size: 23px;
+    }
+}
+</style>
+
+<div class="public-page">
+
+    <article class="public-card">
+
+        <header class="public-top">
+
+            <div class="public-avatar">
+
+                {% if profile and profile['avatar'] %}
+
+                    <img
+                        src="{{ url_for('static', filename=profile['avatar']) }}"
+                        alt="Аватар"
+                    >
+
                 {% else %}
-                    {{ user['username'] }}
-                {% endif %}
-            </h1>
 
-            <p class="profession">
-                {{ profile['profession'] or 'Профессия не указана' if profile else 'Профессия не указана' }}
-            </p>
+                    {{ ((profile['full_name'] if profile and profile['full_name'] else user['username']) or '?')[0]|upper }}
+
+                {% endif %}
+
+            </div>
+
+            <div class="public-identity">
+
+                <h1>
+                    {{ profile['full_name'] if profile and profile['full_name'] else user['username'] }}
+                </h1>
+
+                <p class="public-role">
+                    {{ profile['profession'] if profile and profile['profession'] else 'Профессия не указана' }}
+                </p>
+
+            </div>
+
+        </header>
+
+        <section class="public-section">
+
+            <h2>О себе</h2>
 
             <p>
-                {{ profile['about'] or 'Пользователь пока не добавил описание.' if profile else 'Пользователь пока не добавил описание.' }}
+                {{ profile['about'] if profile and profile['about'] else 'Пользователь пока не добавил описание.' }}
             </p>
-        </div>
-    </div>
 
-    <section class="profile-section">
-        <h2>Навыки и технологии</h2>
-        {% if profile and profile['skills'] %}
-            <div class="skills-list">
-                {% for skill in profile['skills'].split(',') %}
-                    <span class="skill-tag">{{ skill.strip() }}</span>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p>Навыки пока не добавлены.</p>
-        {% endif %}
-    </section>
-
-    <section class="profile-section">
-        <h2>Портфолио</h2>
-        {% if profile and profile['portfolio_url'] %}
-            <a href="{{ profile['portfolio_url'] }}" target="_blank" rel="noopener noreferrer">
-                Посмотреть проекты
-            </a>
-        {% else %}
-            <p>Портфолио пока не добавлено.</p>
-        {% endif %}
-    </section>
-
-    {% if session.get('user_id') and session.get('user_id') != user['id'] %}
-        <section class="profile-section">
-            <h2>Сотрудничество</h2>
-            <form action="{{ url_for('collaborate', user_id=user['id']) }}" method="POST">
-                <label for="message">Предложение о сотрудничестве</label>
-                <textarea id="message" name="message"
-                          placeholder="Расскажи о своей идее..." required></textarea>
-                <button type="submit">Предложить сотрудничество</button>
-            </form>
         </section>
-    {% endif %}
+
+        <section class="public-section">
+
+            <h2>Навыки и технологии</h2>
+
+            <div class="public-skills">
+
+                {% for skill in (profile['skills'] if profile and profile['skills'] else '').replace(';', ',').split(',') if skill.strip() %}
+
+                    <span class="public-skill">
+                        {{ skill.strip() }}
+                    </span>
+
+                {% else %}
+
+                    <p>Навыки пока не добавлены.</p>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        <section class="public-section">
+
+            <h2>Опыт</h2>
+
+            <p>
+                {{ profile['experience'] if profile and profile['experience'] else 'Опыт пока не указан.' }}
+            </p>
+
+        </section>
+
+        <section class="public-section">
+
+            <h2>Проекты</h2>
+
+            <p>
+                {{ profile['projects'] if profile and profile['projects'] else 'Проекты пока не добавлены.' }}
+            </p>
+
+        </section>
+
+        {% if profile and profile['portfolio_url'] %}
+
+            <section class="public-section">
+
+                <h2>Портфолио</h2>
+
+                <a
+                    class="public-link"
+                    href="{{ profile['portfolio_url'] }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Посмотреть проекты ↗
+                </a>
+
+            </section>
+
+        {% endif %}
+
+        {% if session.get('user_id') and session.get('user_id') != user['id'] %}
+
+            <section class="public-section">
+
+                <h2>Предложить сотрудничество</h2>
+
+                <form
+                    class="collab-form"
+                    action="{{ url_for('collaborate', user_id=user['id']) }}"
+                    method="POST"
+                >
+
+                    <label for="message">
+                        Расскажи о своей идее
+                    </label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        placeholder="Привет! Предлагаю вместе поработать над..."
+                        required
+                    ></textarea>
+
+                    <button type="submit">
+                        Отправить предложение
+                    </button>
+
+                </form>
+
+            </section>
+
+        {% endif %}
+
+    </article>
+
 </div>
+
 {% endblock %}
