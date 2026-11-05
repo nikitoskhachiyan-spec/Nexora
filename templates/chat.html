@@ -1,0 +1,184 @@
+```html
+{% extends 'base.html' %}
+
+{% block title %}Чат — Nexora Assist{% endblock %}
+
+{% block content %}
+
+<style>
+.chat-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 24px;
+    background: #1e223a;
+    border: 1px solid #343b5d;
+    border-radius: 20px;
+    color: #fff;
+}
+
+.chat-container h1 {
+    margin-top: 0;
+}
+
+.chat-messages {
+    height: 450px;
+    overflow-y: auto;
+    padding: 16px;
+    background: #171b30;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.chat-message {
+    margin-bottom: 14px;
+    overflow-wrap: anywhere;
+}
+
+.chat-message strong {
+    color: #9ba8ff;
+}
+
+.chat-message p {
+    margin: 4px 0;
+    white-space: pre-wrap;
+}
+
+.chat-form {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-form input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #414968;
+    background: #171b30;
+    color: white;
+    font: inherit;
+}
+
+.chat-form button {
+    padding: 12px 20px;
+    border: 0;
+    border-radius: 10px;
+    background: #596cf2;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.chat-form button:hover {
+    background: #7181ff;
+}
+
+@media (max-width: 600px) {
+    .chat-container {
+        margin: 20px 12px;
+        padding: 16px;
+    }
+
+    .chat-messages {
+        height: 55vh;
+    }
+}
+</style>
+
+<div class="chat-container">
+    <h1>Общий чат</h1>
+    <p>Общайся с другими участниками Nexora.</p>
+
+    <div id="chat-messages" class="chat-messages"></div>
+
+    <form id="chat-form" class="chat-form">
+        <input
+            id="chat-input"
+            type="text"
+            placeholder="Напиши сообщение..."
+            maxlength="1000"
+            autocomplete="off"
+            required
+        >
+        <button type="submit">Отправить</button>
+    </form>
+</div>
+
+<script>
+const messagesContainer = document.getElementById('chat-messages');
+const chatForm = document.getElementById('chat-form');
+const chatInput = document.getElementById('chat-input');
+
+let lastMessageId = 0;
+
+async function loadMessages() {
+    try {
+        const response = await fetch(
+            `/api/chat/messages?after=${lastMessageId}`
+        );
+
+        if (!response.ok) return;
+
+        const messages = await response.json();
+
+        for (const message of messages) {
+            const item = document.createElement('div');
+            item.className = 'chat-message';
+
+            const username = document.createElement('strong');
+            username.textContent = message.username;
+
+            const text = document.createElement('p');
+            text.textContent = message.text;
+
+            item.appendChild(username);
+            item.appendChild(text);
+            messagesContainer.appendChild(item);
+
+            lastMessageId = message.id;
+        }
+
+        if (messages.length > 0) {
+            messagesContainer.scrollTop =
+                messagesContainer.scrollHeight;
+        }
+    } catch (error) {
+        console.error('Ошибка загрузки сообщений:', error);
+    }
+}
+
+chatForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const text = chatInput.value.trim();
+
+    if (!text) return;
+
+    try {
+        const response = await fetch('/api/chat/messages', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text })
+        });
+
+        if (!response.ok) {
+            alert('Не удалось отправить сообщение');
+            return;
+        }
+
+        chatInput.value = '';
+        await loadMessages();
+        chatInput.focus();
+    } catch (error) {
+        alert('Ошибка соединения с сервером');
+    }
+});
+
+loadMessages();
+setInterval(loadMessages, 2000);
+</script>
+
+{% endblock %}
+```

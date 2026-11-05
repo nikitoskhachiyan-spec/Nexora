@@ -49,6 +49,40 @@ def init_auth_db():
             )
         """)
 
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS messages (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                username TEXT NOT NULL,
+                text TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS private_messages (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                sender_id INTEGER NOT NULL,
+                receiver_id INTEGER NOT NULL,
+                text TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (sender_id) REFERENCES users(id),
+                FOREIGN KEY (receiver_id) REFERENCES users(id)
+            )
+        """)
+        columns = {
+            row["name"]
+            for row in conn.execute(
+                "PRAGMA table_info(private_messages)"
+            ).fetchall()
+        }
+
+        if "is_read" not in columns:
+            conn.execute("""
+                ALTER TABLE private_messages
+                ADD COLUMN is_read INTEGER NOT NULL DEFAULT 0
+            """)
+
         # Добавляем projects в существующую таблицу,
         # если колонка ещё не существует.
         columns = {

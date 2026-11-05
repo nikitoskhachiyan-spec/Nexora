@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block title %}Найти напарника — Nexora Assist{% endblock %}
@@ -7,26 +6,23 @@
 
 <style>
 .partners-page {
-    width: min(1200px, calc(100% - 36px));
-    margin: 0 auto;
-    padding: 34px 0 60px;
+    width: min(1100px, calc(100% - 32px));
+    margin: 30px auto;
     color: #edf0ff;
 }
 
 .partners-heading {
     text-align: center;
-    margin: 0 0 30px;
+    margin-bottom: 28px;
 }
 
 .partners-heading h1 {
-    font-size: 34px;
-    margin: 0 0 10px;
-    color: #f8f9ff;
+    font-size: 32px;
+    margin-bottom: 10px;
 }
 
 .partners-heading p {
-    color: #9da6c5;
-    line-height: 1.6;
+    color: #9ba8d8;
 }
 
 .partner-filters {
@@ -35,14 +31,13 @@
     border-radius: 18px;
     padding: 22px;
     margin-bottom: 26px;
-    box-shadow: 0 12px 32px rgba(0,0,0,.15);
 }
 
 .partner-search {
     width: 100%;
     box-sizing: border-box;
+    padding: 14px;
     margin-bottom: 14px;
-    padding: 14px 15px;
     border: 1px solid #3b4367;
     border-radius: 10px;
     background: #191d32;
@@ -52,9 +47,8 @@
 
 .partner-filter-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1.45fr 1.2fr;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 12px;
-    align-items: center;
 }
 
 .partner-filter-grid select {
@@ -65,22 +59,8 @@
     border: 1px solid #3b4367;
     border-radius: 10px;
     background: #191d32;
-    color: #f4f6ff;
-    font: inherit;
-    cursor: pointer;
-}
-
-.partner-filter-grid select option {
-    background: #22263d;
     color: white;
-    padding: 8px;
-}
-
-.partner-search:focus,
-.partner-filter-grid select:focus {
-    outline: none;
-    border-color: #7180ff;
-    box-shadow: 0 0 0 3px #6777ff24;
+    font: inherit;
 }
 
 .partner-filter-actions {
@@ -95,18 +75,17 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 42px;
-    padding: 10px 20px;
+    padding: 12px 20px;
     border-radius: 10px;
-    text-decoration: none;
     font: inherit;
     font-size: 14px;
     font-weight: 650;
+    text-decoration: none;
     cursor: pointer;
 }
 
 .partner-submit {
-    border: 1px solid #596cf2;
+    border: 0;
     background: #596cf2;
     color: white;
 }
@@ -116,13 +95,9 @@
 }
 
 .partner-reset {
-    border: 1px solid #414a70;
     background: #303652;
+    border: 1px solid #414968;
     color: #e3e7ff;
-}
-
-.partner-reset:hover {
-    background: #3a4263;
 }
 
 .partner-results {
@@ -138,26 +113,25 @@
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
+    align-items: stretch;
 }
 
 .partner-card {
-    display: block;
-    padding: 22px;
+    display: flex;
+    flex-direction: column;
     min-width: 0;
-    border: 1px solid #414968;
+    box-sizing: border-box;
+    padding: 22px;
+    border: 1px solid #343b5d;
     border-radius: 17px;
-    background: #22263d;
+    background: #1c213b;
     color: #e9ecff;
-    text-decoration: none;
-    box-shadow: 0 8px 24px #0002;
     transition: .2s;
 }
 
 .partner-card:hover {
-    transform: translateY(-4px);
-    border-color: #7180ff;
-    background: #252a45;
-    color: white;
+    border-color: #596cf2;
+    transform: translateY(-3px);
 }
 
 .partner-avatar {
@@ -168,10 +142,10 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 14px;
-    background: linear-gradient(135deg, #596cf2, #8065ee);
+    background: #6b5ce7;
     color: white;
     font-size: 24px;
-    font-weight: 750;
+    font-weight: bold;
     overflow: hidden;
 }
 
@@ -183,56 +157,83 @@
 
 .partner-card h2 {
     font-size: 20px;
-    margin: 0 0 5px;
-    color: #f8f9ff;
+    margin: 0 0 6px;
+    overflow-wrap: anywhere;
 }
 
 .partner-role {
-    color: #91a0ff;
-    font-weight: 650;
-    font-size: 14px;
+    color: #9ba8d8;
+    font-size: 13px;
+    font-weight: 600;
     margin-bottom: 14px;
 }
 
 .partner-detail {
-    margin: 8px 0;
-    color: #d7dcf1;
     font-size: 14px;
-    line-height: 1.55;
+    line-height: 1.6;
+    margin: 0 0 10px;
     overflow-wrap: anywhere;
 }
 
 .partner-detail strong {
-    color: #aebaff;
+    color: #aab5ff;
 }
 
-.partner-open {
-    display: inline-block;
-    margin-top: 12px;
-    color: #91a0ff;
-    font-weight: 700;
+.partner-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.partner-profile-btn,
+.partner-message-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border-radius: 9px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 650;
+    transition: .2s;
+}
+
+.partner-profile-btn {
+    background: #303652;
+    border: 1px solid #414968;
+    color: #e3e7ff;
+}
+
+.partner-profile-btn:hover {
+    background: #3a4263;
+}
+
+.partner-message-btn {
+    background: #596cf2;
+    border: 1px solid #596cf2;
+    color: white;
+}
+
+.partner-message-btn:hover {
+    background: #7181ff;
 }
 
 .partner-empty {
     grid-column: 1 / -1;
     text-align: center;
-    padding: 42px 20px;
-    border: 1px solid #414968;
+    padding: 40px 20px;
+    border: 1px solid #343b5d;
     border-radius: 17px;
-    background: #22263d;
-}
-
-.partner-empty h2 {
-    color: white;
-    font-size: 20px;
+    background: #1c213b;
 }
 
 .partner-empty p {
-    color: #aab2ce;
-    line-height: 1.6;
+    color: #9ba8d8;
 }
 
-@media(max-width: 900px) {
+@media (max-width: 900px) {
     .partners-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -242,197 +243,154 @@
     }
 }
 
-@media(max-width: 600px) {
-    .partners-page {
-        padding-top: 25px;
-    }
-
-    .partners-heading h1 {
-        font-size: 28px;
-    }
-
-    .partner-filters {
-        padding: 15px;
-    }
-
-    .partner-filter-grid,
-    .partners-grid {
+@media (max-width: 600px) {
+    .partners-grid,
+    .partner-filter-grid {
         grid-template-columns: 1fr;
     }
 
-    .partner-filter-actions {
-        flex-direction: column;
+    .partners-page {
+        width: calc(100% - 24px);
+        margin: 20px auto;
     }
 
-    .partner-submit,
-    .partner-reset {
-        width: 100%;
+    .partner-filters {
+        padding: 16px;
     }
 }
 </style>
 
-<section class="partners-page">
+<div class="partners-page">
 
-    <header class="partners-heading">
+    <div class="partners-heading">
         <h1>Найти напарника</h1>
-        <p>
-            Найди единомышленников для совместной работы
-            над интересными проектами.
-        </p>
-    </header>
+        <p>Найди единомышленников для совместной работы над интересными проектами.</p>
+    </div>
 
-    <form action="{{ url_for('partners') }}"
-          method="get"
-          class="partner-filters">
+    <form class="partner-filters" method="GET" action="{{ url_for('partners') }}">
 
         <input
             class="partner-search"
-            type="search"
-            name="q"
-            value="{{ query }}"
+            type="text"
+            name="search"
             placeholder="Поиск по имени, профессии, навыкам или проекту..."
-            autocomplete="off"
+            value="{{ request.args.get('search', '') }}"
         >
 
         <div class="partner-filter-grid">
 
             <select name="specialization">
-                <option value="">Все специализации</option>
-                {% for item in [
-                    "Frontend", "Backend", "Fullstack",
-                    "UI/UX", "Mobile", "QA", "DevOps",
-                    "Data Science", "Machine Learning",
-                    "Cybersecurity", "Game Development"
-                ] %}
-                    <option value="{{ item }}"
-                        {% if specialization|lower == item|lower %}selected{% endif %}>
-                        {{ item }}
-                    </option>
+                <option value="">Все специальности</option>
+                {% for item in specializations %}
+                <option value="{{ item }}"
+                    {% if request.args.get('specialization') == item %}selected{% endif %}>
+                    {{ item }}
+                </option>
                 {% endfor %}
             </select>
 
             <select name="experience">
                 <option value="">Любой опыт</option>
-                {% for item in ["Начинающий", "Средний", "Опытный"] %}
-                    <option value="{{ item }}"
-                        {% if experience|lower == item|lower %}selected{% endif %}>
-                        {{ item }}
-                    </option>
+                {% for item in ['Начинающий', 'Средний', 'Продвинутый', 'Эксперт'] %}
+                <option value="{{ item }}"
+                    {% if request.args.get('experience') == item %}selected{% endif %}>
+                    {{ item }}
+                </option>
                 {% endfor %}
             </select>
 
             <select name="language">
                 <option value="">Любой язык</option>
-                {% for item in [
-                    "Python", "JavaScript", "TypeScript",
-                    "Java", "C", "C++", "C#", "Go",
-                    "Rust", "PHP", "Ruby", "Swift",
-                    "Kotlin", "Dart", "R", "Scala",
-                    "Perl", "Lua", "Objective-C",
-                    "Visual Basic", "Assembly",
-                    "Haskell", "Elixir", "Erlang",
-                    "Clojure", "F#", "Fortran",
-                    "COBOL", "Julia", "MATLAB",
-                    "Groovy", "Bash", "PowerShell",
-                    "SQL", "HTML", "CSS"
-                ] %}
-                    <option value="{{ item }}"
-                        {% if language|lower == item|lower %}selected{% endif %}>
-                        {{ item }}
-                    </option>
+                {% for item in languages %}
+                <option value="{{ item }}"
+                    {% if request.args.get('language') == item %}selected{% endif %}>
+                    {{ item }}
+                </option>
                 {% endfor %}
             </select>
 
-            <select name="project_type">
+            <select name="project">
                 <option value="">Любой проект</option>
-                {% for item in [
-                    "Веб-сайт", "Мобильное приложение",
-                    "Telegram-бот", "Игра", "Дизайн",
-                    "Интернет-магазин", "API",
-                    "Desktop-приложение", "Другое"
-                ] %}
-                    <option value="{{ item }}"
-                        {% if project_type|lower == item|lower %}selected{% endif %}>
-                        {{ item }}
-                    </option>
+                {% for item in projects %}
+                <option value="{{ item }}"
+                    {% if request.args.get('project') == item %}selected{% endif %}>
+                    {{ item }}
+                </option>
                 {% endfor %}
             </select>
 
         </div>
 
         <div class="partner-filter-actions">
-            <button class="partner-submit" type="submit">
-                Найти напарника
-            </button>
-
-            <a class="partner-reset" href="{{ url_for('partners') }}">
-                Сбросить фильтры
-            </a>
+            <button class="partner-submit" type="submit">Найти напарника</button>
+            <a class="partner-reset" href="{{ url_for('partners') }}">Сбросить фильтры</a>
         </div>
 
     </form>
 
-    <p class="partner-results">
-        Найдено напарников:
-        <strong>{{ partners|length }}</strong>
-    </p>
+    <div class="partner-results">
+        Найдено напарников: <strong>{{ users|length }}</strong>
+    </div>
 
     <div class="partners-grid">
 
-        {% for partner in partners %}
+        {% for user in users %}
 
-            <a class="partner-card"
-               href="{{ url_for('user_profile', user_id=partner.id) }}">
+        <article class="partner-card">
 
-                <div class="partner-avatar">
-                    {% if partner.avatar %}
-                        <img
-                            src="{{ url_for('static', filename=partner.avatar) }}"
-                            alt="Аватар"
-                        >
-                    {% else %}
-                        {{ (partner.name or '?')[0]|upper }}
-                    {% endif %}
-                </div>
+            <div class="partner-avatar">
+                {% if user.avatar %}
+                <img src="{{ url_for('static', filename=user.avatar) }}" alt="Аватар">
+                {% else %}
+                {{ user.username[0]|upper }}
+                {% endif %}
+            </div>
 
-                <h2>{{ partner.name }}</h2>
+            <h2>{{ user.username }}</h2>
 
-                <div class="partner-role">
-                    {{ partner.role }}
-                </div>
+            <div class="partner-role">
+                {{ user.specialization or 'Специализация не указана' }}
+            </div>
 
-                <p class="partner-detail">
-                    <strong>Навыки:</strong> {{ partner.skills }}
-                </p>
+            <p class="partner-detail">
+                <strong>Навыки:</strong>
+                {{ user.skills or 'Не указаны' }}
+            </p>
 
-                <p class="partner-detail">
-                    <strong>Опыт:</strong> {{ partner.experience }}
-                </p>
+            <p class="partner-detail">
+                <strong>Опыт:</strong>
+                {{ user.experience or 'Не указан' }}
+            </p>
 
-                <p class="partner-detail">
-                    <strong>Проект:</strong> {{ partner.project }}
-                </p>
+            <p class="partner-detail">
+                <strong>Проект:</strong>
+                {{ user.project or 'Пока не указан' }}
+            </p>
 
-                <span class="partner-open">
-                    Посмотреть профиль →
-                </span>
+            <div class="partner-card-actions">
+                <a class="partner-profile-btn"
+                   href="{{ url_for('profile', user_id=user.id) }}">
+                    Посмотреть профиль
+                </a>
 
-            </a>
+                <a class="partner-message-btn"
+   href="{{ url_for('private_chat', user_id=user.id) }}">
+    Написать
+</a>
+            </div>
+
+        </article>
 
         {% else %}
 
-            <div class="partner-empty">
-                <h2>Пока нет подходящих напарников</h2>
-                <p>
-                    Пользователи с заполненными профилями,
-                    подходящие под выбранные фильтры, появятся здесь.
-                </p>
-            </div>
+        <div class="partner-empty">
+            <h2>Напарники не найдены</h2>
+            <p>Попробуй изменить поисковый запрос или сбросить фильтры.</p>
+        </div>
 
         {% endfor %}
 
     </div>
-
-</section>
+</div>
 
 {% endblock %}

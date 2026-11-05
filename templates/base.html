@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -28,7 +29,17 @@
         <a href="{{ url_for('index') }}">Главная</a>
         <a href="{{ url_for('about') }}">Про нас</a>
         <a href="{{ url_for('profile') }}">Профиль</a>
-        <a href="{{ url_for('partners') }}">Найти напарника</a>
+        <a href="{{ url_for('chat') }}">Чат</a>
+
+        <a href="{{ url_for('partners') }}" class="partners-link">
+    Найти напарника
+
+    {% if unread_count > 0 %}
+        <span class="notification-badge">
+            {{ unread_count }}
+        </span>
+    {% endif %}
+</a>
     </nav>
 
     <div class="auth-buttons">
@@ -92,8 +103,42 @@
     {% block content %}{% endblock %}
 
 </main>
+{% if session.get('user_id') %}
+<div
+    class="message-notification"
+    id="message-notification"
+    {% if unread_count == 0 %}hidden{% endif %}
+>
+    <div class="notification-title">
+        Новые сообщения!
+    </div>
+
+    <p id="notification-message">
+        {% if unread_sender %}
+            Вам написал:
+            <strong>{{ unread_sender['username'] }}</strong>
+        {% else %}
+            У вас новые сообщения.
+        {% endif %}
+    </p>
+
+    <p id="notification-count">
+        Непрочитанных сообщений: {{ unread_count }}
+    </p>
+
+    <a id="notification-link"
+       href="{% if unread_sender %}{{ url_for('private_chat', user_id=unread_sender['sender_id']) }}{% else %}{{ url_for('partners') }}{% endif %}">
+        Ответить →
+    </a>
+</div>
+{% endif %}
+
+
+
+
 
 <style>
+
 .flash-messages {
     width: min(900px, calc(100% - 32px));
     margin: 16px auto 0;
@@ -120,6 +165,73 @@
     display: inline-flex;
     margin: 0;
 }
+
+/* Красный счётчик */
+
+.notification-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    margin-left: 5px;
+    border-radius: 50px;
+    background: #ff354f;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Всплывающее уведомление */
+
+.message-notification {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 280px;
+    background: #252a45;
+    color: white;
+    border: 1px solid #596cf2;
+    border-radius: 14px;
+    padding: 18px;
+    z-index: 9999;
+    box-shadow: 0 5px 25px #0006;
+    animation: notification-show 0.4s ease;
+}
+
+.notification-title {
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.message-notification p {
+    font-size: 14px;
+}
+
+.message-notification a {
+    color: #aab5ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.message-notification a:hover {
+    color: white;
+}
+
+@keyframes notification-show {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 </style>
 
 </body>

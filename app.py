@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, session, redirect, flash, abort
+from flask import Flask, render_template, url_for, request, session, redirect, flash, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
@@ -15,6 +15,39 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 app.register_blueprint(auth)
+
+
+@app.context_processor
+def notification_context():
+    unread_count = 0
+    unread_sender = None
+
+    if 'user_id' in session:
+        with get_db() as conn:
+
+            unread_count = conn.execute("""
+                SELECT COUNT(*)
+                FROM private_messages
+                WHERE receiver_id = ?
+                AND is_read = 0
+            """, (session['user_id'],)).fetchone()[0]
+
+            unread_sender = conn.execute("""
+                SELECT
+                    m.sender_id,
+                    u.username
+                FROM private_messages m
+                JOIN users u ON u.id = m.sender_id
+                WHERE m.receiver_id = ?
+                AND m.is_read = 0
+                ORDER BY m.id DESC
+                LIMIT 1
+            """, (session['user_id'],)).fetchone()
+
+    return {
+        'unread_count': unread_count,
+        'unread_sender': unread_sender
+    }
 
 
 @app.after_request
@@ -64,110 +97,266 @@ def index():
 # ПОИСК НАПАРНИКОВ
 @app.route('/partners.html')
 def partners():
+    if 'user_id' not in session:
+        return redirect(url_for('auth.login'))
 
-    query = clean(request.args.get('q'))
+    search = norm(request.args.get('search', ''))
     specialization = clean(request.args.get('specialization'))
     experience = clean(request.args.get('experience'))
     language = clean(request.args.get('language'))
-    project_type = clean(request.args.get('project_type'))
+    project = clean(request.args.get('project'))
 
+    current_user_id = session['user_id']
+
+    # Получаем пользователей и их профили
     with get_db() as conn:
-        rows = conn.execute('''
+        rows = conn.execute("""
             SELECT
-                users.id AS id,
-                users.username AS username,
-                profiles.full_name AS full_name,
-                profiles.profession AS profession,
-                profiles.skills AS skills,
-                profiles.experience AS experience,
-                profiles.about AS about,
-                profiles.portfolio_url AS portfolio_url,
-                profiles.projects AS projects,
-                profiles.avatar AS avatar
-            FROM users
-            LEFT JOIN profiles ON profiles.user_id = users.id
-            ORDER BY users.created_at DESC, users.id DESC
-        ''').fetchall()
+                u.id,
+                u.username,
+                p.full_name,
+                p.profession AS specialization,
+                p.skills,
+                p.experience,
+                p.projects AS project
+            FROM users u
+            LEFT JOIN profiles p ON p.user_id = u.id
+            WHERE u.id != ?
+            ORDER BY u.username COLLATE NOCASE
+        """, (current_user_id,)).fetchall()
 
-    found = []
-    current_user_id = session.get('user_id')
+    users = [dict(row) for row in rows]
 
-    for row in rows:
+    # Поиск по имени, профессии, навыкам и проекту
+    if search:
+        users = [
+            user for user in users
+            if any(
+                search in norm(user.get(field))
+                for field in (
+                    'username',
+                    'full_name',
+                    'specialization',
+                    'skills',
+                    'project'
+                )
+            )
+        ]
 
-        if current_user_id is not None and row['id'] == current_user_id:
-            continue
+    # Фильтр по специальности
+    if specialization:
+        users = [
+            user for user in users
+            if norm(user.get('specialization')) == norm(specialization)
+        ]
 
-        name = clean(row['full_name']) or clean(row['username'])
-        role = clean(row['profession']) or 'Специализация не указана'
-        skills = clean(row['skills'])
-        exp = clean(row['experience'])
-        about_text = clean(row['about'])
-        projects = clean(row['projects'])
-        portfolio = clean(row['portfolio_url'])
+    # Фильтр по опыту
+    if experience:
+        users = [
+            user for user in users
+            if experience_matches(user.get('experience'), experience)
+        ]
 
-        if not any([
-            clean(row['full_name']),
-            clean(row['profession']),
-            skills,
-            exp,
-            about_text,
-            projects,
-            portfolio
-        ]):
-            continue
+    # Фильтр по языку / навыку
+    if language:
+        users = [
+            user for user in users
+            if any(
+                norm(skill) == norm(language)
+                for skill in split_values(user.get('skills'))
+            )
+        ]
 
-        searchable = norm(' '.join([
-            name, role, skills, exp, about_text, projects
-        ]))
+    # Фильтр по проекту
+    if project:
+        users = [
+            user for user in users
+            if norm(user.get('project')) == norm(project)
+        ]
 
-        if query and norm(query) not in searchable:
-            continue
+    # Формируем значения для выпадающих списков
+    all_users = [dict(row) for row in rows]
 
-        if specialization and norm(specialization) not in norm(role):
-            continue
+    specializations = sorted({
+        user['specialization']
+        for user in all_users
+        if user.get('specialization')
+    }, key=str.casefold)
 
-        if experience and norm(exp) != norm(experience):
-            continue
+    languages = sorted({
+        skill
+        for user in all_users
+        for skill in split_values(user.get('skills'))
+    }, key=str.casefold)
 
-        # Поиск языка среди всех навыков пользователя
-        if language:
-            skill_values = [
-                norm(item)
-                for item in split_values(skills)
-            ]
-
-            if norm(language) not in skill_values:
-                continue
-
-        if project_type and norm(project_type) not in norm(projects):
-            continue
-
-        found.append({
-            'id': row['id'],
-            'name': name,
-            'role': role,
-            'skills': skills or 'Пока не указаны',
-            'experience': exp or 'Не указан',
-            'project': projects or 'Пока не указан',
-            'about': about_text,
-            'portfolio_url': portfolio,
-            'avatar': clean(row['avatar'])
-        })
+    projects = sorted({
+        user['project']
+        for user in all_users
+        if user.get('project')
+    }, key=str.casefold)
 
     return render_template(
         'partners.html',
-        partners=found,
-        query=query,
-        specialization=specialization,
-        experience=experience,
-        language=language,
-        project_type=project_type
+        users=users,
+        specializations=specializations,
+        languages=languages,
+        projects=projects
     )
 
 
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+
+# ЛИЧНЫЕ СООБЩЕНИЯ
+
+@app.route('/private_chat/<int:user_id>', methods=['GET', 'POST'])
+def private_chat(user_id):
+
+    if 'user_id' not in session:
+        return redirect(url_for('auth.login'))
+
+    current_user_id = session['user_id']
+
+    with get_db() as conn:
+        conn.execute("""
+            UPDATE private_messages
+            SET is_read = 1
+            WHERE sender_id = ?
+            AND receiver_id = ?
+        """, (user_id, current_user_id))
+        recipient = conn.execute(
+            'SELECT id, username FROM users WHERE id = ?',
+            (user_id,)
+        ).fetchone()
+
+        if recipient is None:
+            abort(404)
+
+        if user_id == current_user_id:
+            flash('Нельзя отправить сообщение самому себе.')
+            return redirect(url_for('partners'))
+
+        if request.method == 'POST':
+            content = clean(request.form.get('content'))
+
+            if content:
+                conn.execute("""
+                    INSERT INTO private_messages
+                        (sender_id, receiver_id, text)
+                    VALUES (?, ?, ?)
+                """, (current_user_id, user_id, content))
+
+            return redirect(url_for(
+                'private_chat',
+                user_id=user_id
+            ))
+
+        messages = conn.execute("""
+            SELECT
+                m.id,
+                m.sender_id,
+                m.receiver_id,
+                m.text AS content,
+                m.created_at,
+                u.username AS sender_username
+            FROM private_messages m
+            JOIN users u ON u.id = m.sender_id
+            WHERE
+                (m.sender_id = ? AND m.receiver_id = ?)
+                OR
+                (m.sender_id = ? AND m.receiver_id = ?)
+            ORDER BY m.id ASC
+        """, (
+            current_user_id,
+            user_id,
+            user_id,
+            current_user_id
+        )).fetchall()
+
+    return render_template(
+        'private_chat.html',
+        recipient=recipient,
+        messages=messages,
+        current_user_id=current_user_id
+    )
+
+
+# ЧАТ
+@app.route('/chat')
+def chat():
+    if 'user_id' not in session:
+        return redirect(url_for('auth.login'))
+
+    return render_template('chat.html')
+
+
+@app.route('/api/chat/messages')
+def get_messages():
+    if 'user_id' not in session:
+        return jsonify({'error': 'Необходимо войти'}), 401
+
+    after_id = request.args.get('after', 0, type=int)
+
+    with get_db() as conn:
+        rows = conn.execute("""
+            SELECT id, username, text, created_at
+            FROM messages
+            WHERE id > ?
+            ORDER BY id ASC
+            LIMIT 100
+        """, (after_id,)).fetchall()
+
+    return jsonify([
+        {
+            'id': row['id'],
+            'username': row['username'],
+            'text': row['text'],
+            'created_at': row['created_at']
+        }
+        for row in rows
+    ])
+
+
+@app.route('/api/chat/messages', methods=['POST'])
+def send_message():
+    if 'user_id' not in session:
+        return jsonify({'error': 'Необходимо войти'}), 401
+
+    data = request.get_json(silent=True) or {}
+    text = clean(data.get('text'))
+
+    if not text:
+        return jsonify({'error': 'Сообщение пустое'}), 400
+
+    if len(text) > 1000:
+        return jsonify({'error': 'Максимум 1000 символов'}), 400
+
+    with get_db() as conn:
+        cursor = conn.execute("""
+            INSERT INTO messages (user_id, username, text)
+            VALUES (?, ?, ?)
+        """, (
+            session['user_id'],
+            session['username'],
+            text
+        ))
+
+        message_id = cursor.lastrowid
+
+        row = conn.execute("""
+            SELECT id, username, text, created_at
+            FROM messages
+            WHERE id = ?
+        """, (message_id,)).fetchone()
+
+    return jsonify({
+        'id': row['id'],
+        'username': row['username'],
+        'text': row['text'],
+        'created_at': row['created_at']
+    }), 201
 
 
 # ЛИЧНЫЙ ПРОФИЛЬ
@@ -305,6 +494,19 @@ def collaborate(user_id):
 
 
 init_auth_db()
+
+
+with get_db() as conn:
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            username TEXT NOT NULL,
+            text TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
 
 
 if __name__ == '__main__':
