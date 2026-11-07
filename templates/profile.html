@@ -253,6 +253,61 @@
 .profile-cancel:hover {
     background: #383f5d;
 }
+.report-button {
+    margin-top: 15px;
+    padding: 10px 16px;
+    border: 1px solid #a94d65;
+    border-radius: 10px;
+    background: transparent;
+    color: #ff829c;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.report-button:hover {
+    background: #49283b;
+}
+
+.report-form {
+    margin-top: 15px;
+    padding: 18px;
+    border: 1px solid #414968;
+    border-radius: 12px;
+    background: #171b30;
+}
+
+.report-form label {
+    display: block;
+    margin: 12px 0 7px;
+    color: #cbd2ef;
+}
+
+.report-form select,
+.report-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px;
+    border: 1px solid #414968;
+    border-radius: 9px;
+    background: #1e223a;
+    color: white;
+    font: inherit;
+}
+
+.report-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.report-form button {
+    margin-top: 13px;
+    padding: 11px 17px;
+    border: 0;
+    border-radius: 9px;
+    background: #c84c6b;
+    color: white;
+    cursor: pointer;
+}
 
 /* АДАПТИВНОСТЬ */
 @media (max-width: 700px) {
@@ -380,14 +435,29 @@
         </div>
 
         <div class="profile-section">
-            <h2>Проекты</h2>
-            <p class="view-mode">{{ profile.projects if profile and profile.projects else 'Проекты пока не добавлены.' }}</p>
-            <div class="edit-mode" hidden>
-                <textarea name="projects" placeholder="Расскажите о своих проектах">{{ profile.projects if profile else '' }}</textarea>
-            </div>
-        </div>
+    <h2>Тип проекта</h2>
 
-        <div class="profile-section">
+    <p class="view-mode">
+        {{ profile.projects if profile and profile.projects else 'Проект не выбран.' }}
+    </p>
+
+    <div class="edit-mode" hidden>
+        <select name="projects">
+            <option value="">Выберите проект</option>
+
+            {% for project in project_options %}
+                <option value="{{ project }}"
+                    {% if profile and profile.projects and profile.projects|lower|trim == project|lower|trim %}
+                        selected
+                    {% endif %}>
+                    {{ project }}
+                </option>
+            {% endfor %}
+                </select>
+    </div>
+</div>
+
+<div class="profile-section">
     <h2>Навыки</h2>
 
     <div class="view-mode profile-skills">

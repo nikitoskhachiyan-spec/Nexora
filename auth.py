@@ -70,6 +70,18 @@ def init_auth_db():
                 FOREIGN KEY (receiver_id) REFERENCES users(id)
             )
         """)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS reports (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                reporter_id INTEGER NOT NULL,
+                reported_user_id INTEGER,
+                reason TEXT NOT NULL,
+                description TEXT DEFAULT '',
+                status TEXT DEFAULT 'new',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (reporter_id) REFERENCES users(id)
+            )
+        """)
         columns = {
             row["name"]
             for row in conn.execute(
@@ -83,8 +95,8 @@ def init_auth_db():
                 ADD COLUMN is_read INTEGER NOT NULL DEFAULT 0
             """)
 
-        # Добавляем projects в существующую таблицу,
-        # если колонка ещё не существует.
+
+        # Добавляем projects в существующую таблицу
         columns = {
             row["name"]
             for row in conn.execute(
@@ -93,9 +105,41 @@ def init_auth_db():
         }
 
         if "projects" not in columns:
-            conn.execute(
-                "ALTER TABLE profiles ADD COLUMN projects TEXT DEFAULT ''"
-            )
+            conn.execute("""
+                ALTER TABLE profiles
+                ADD COLUMN projects TEXT DEFAULT ''
+            """)
+
+        # Добавляем поля администратора
+        columns = {
+            row["name"]
+            for row in conn.execute(
+                "PRAGMA table_info(users)"
+            ).fetchall()
+        }
+
+        if "role" not in columns:
+            conn.execute("""
+                ALTER TABLE users
+                ADD COLUMN role TEXT NOT NULL DEFAULT 'user'
+            """)
+
+        if "is_blocked" not in columns:
+            conn.execute("""
+                ALTER TABLE users
+                ADD COLUMN is_blocked INTEGER NOT NULL DEFAULT 0
+            """)
+
+        # Единственный администратор Nexora
+        conn.execute("""
+            UPDATE users
+            SET role = CASE
+                WHEN username = 'Nikita_admine' THEN 'admin'
+                ELSE 'user'
+            END
+        """)
+
+
 
 
 
@@ -159,10 +203,18 @@ def login():
             ).fetchone()
 
         if user and check_password_hash(user["password_hash"], password):
+
+            if "is_blocked" in user.keys() and user["is_blocked"]:
+                flash("Ваш аккаунт заблокирован администрацией.", "error")
+                return render_template("login.html")
+
             session.clear()
             session["user_id"] = user["id"]
             session["username"] = user["username"]
+            session["role"] = user["role"]
+
             return redirect(url_for("index"))
+
 
         flash("Неверный email или пароль.", "error")
 

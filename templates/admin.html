@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nexora — Администратор</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #090a19;
+            color: #f4f3ff;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #aaa9c5;
+            margin-bottom: 30px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .card, .section {
+            background: #15162c;
+            border: 1px solid #29294b;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .card span {
+            color: #aaa9c5;
+        }
+
+        .card h2 {
+            font-size: 30px;
+            margin: 12px 0 0;
+            color: #a58bff;
+        }
+
+        .section {
+            margin-bottom: 25px;
+            overflow-x: auto;
+        }
+
+        h3 {
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th, td {
+            padding: 14px 10px;
+            text-align: left;
+            border-bottom: 1px solid #30304b;
+        }
+
+        th {
+            color: #a99aff;
+        }
+
+        button, select {
+            background: #29264f;
+            color: white;
+            border: 1px solid #454078;
+            border-radius: 7px;
+            padding: 9px 12px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #5940b5;
+        }
+
+        .danger {
+            background: #702b43;
+        }
+
+        .success {
+            color: #69e6a1;
+        }
+
+        .blocked {
+            color: #ff7777;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        a {
+            color: #b5a3ff;
+            text-decoration: none;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        @media(max-width: 750px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 400px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <div class="top">
+        <div>
+            <h1>🛡 Панель администратора</h1>
+            <p class="subtitle">
+                Управление платформой Nexora
+            </p>
+        </div>
+
+        <a href="{{ url_for('index') }}">На главную →</a>
+    </div>
+
+    <div class="stats">
+
+        <div class="card">
+            <span>Пользователи</span>
+            <h2>{{ stats.users }}</h2>
+        </div>
+
+        <div class="card">
+            <span>Проекты</span>
+            <h2>{{ stats.projects }}</h2>
+        </div>
+
+        <div class="card">
+            <span>Новые жалобы</span>
+            <h2>{{ stats.reports }}</h2>
+        </div>
+
+        <div class="card">
+            <span>Заблокировано</span>
+            <h2>{{ stats.blocked }}</h2>
+        </div>
+
+    </div>
+
+    <div class="section">
+        <h3>👥 Управление пользователями</h3>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Пользователь</th>
+                <th>Email</th>
+                <th>Роль</th>
+                <th>Статус</th>
+                <th>Действия</th>
+            </tr>
+
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+
+                <td>
+                    <form method="POST"
+                          action="{{ url_for('admin_change_role', user_id=user.id) }}">
+                        <select name="role">
+                            <option value="user"
+                                {% if user.role == 'user' %}selected{% endif %}>
+                                Пользователь
+                            </option>
+
+                            <option value="admin"
+                                {% if user.role == 'admin' %}selected{% endif %}>
+                                Администратор
+                            </option>
+                        </select>
+
+                        <button type="submit">Сохранить</button>
+                    </form>
+                </td>
+
+                <td>
+                    {% if user.is_blocked %}
+                        <span class="blocked">Заблокирован</span>
+                    {% else %}
+                        <span class="success">Активен</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if user.id != session.get('user_id') %}
+                    <div class="actions">
+                        <form method="POST"
+                              action="{{ url_for('admin_block_user', user_id=user.id) }}">
+                            <button class="danger" type="submit">
+                                {% if user.is_blocked %}
+                                    Разблокировать
+                                {% else %}
+                                    Заблокировать
+                                {% endif %}
+                            </button>
+                        </form>
+
+                        <form method="POST"
+                              action="{{ url_for('admin_delete_project', user_id=user.id) }}"
+                              onsubmit="return confirm('Удалить информацию о проекте?')">
+                            <button type="submit">Удалить проект</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="section">
+        <h3>🚨 Жалобы пользователей</h3>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Кто пожаловался</th>
+                <th>На пользователя</th>
+                <th>Причина</th>
+                <th>Описание</th>
+                <th>Статус</th>
+                <th>Действия</th>
+            </tr>
+
+            {% for report in reports %}
+            <tr>
+                <td>{{ report.id }}</td>
+                <td>{{ report.reporter_name or 'Удалённый пользователь' }}</td>
+                <td>{{ report.reported_name or 'Не указан' }}</td>
+                <td>{{ report.reason }}</td>
+                <td>{{ report.description }}</td>
+                <td>{{ report.status }}</td>
+
+                <td>
+                    <div class="actions">
+                        <form method="POST"
+                              action="{{ url_for('admin_resolve_report', report_id=report.id) }}">
+                            <button type="submit">Обработать</button>
+                        </form>
+
+                        <form method="POST"
+                              action="{{ url_for('admin_delete_report', report_id=report.id) }}">
+                            <button class="danger" type="submit">Удалить</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7">Жалоб пока нет.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

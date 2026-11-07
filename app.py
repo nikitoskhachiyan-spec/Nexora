@@ -1,11 +1,14 @@
 from flask import Flask, render_template, url_for, request, session, redirect, flash, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from functools import wraps
 import os
 
 from auth import auth, init_auth_db, get_db
 
+
 app = Flask(__name__)
+
 app.config['SECRET_KEY'] = os.environ.get(
     'FLASK_SECRET_KEY',
     'dev-only-change-this-secret-before-deployment'
@@ -24,7 +27,6 @@ def notification_context():
 
     if 'user_id' in session:
         with get_db() as conn:
-
             unread_count = conn.execute("""
                 SELECT COUNT(*)
                 FROM private_messages
@@ -33,9 +35,7 @@ def notification_context():
             """, (session['user_id'],)).fetchone()[0]
 
             unread_sender = conn.execute("""
-                SELECT
-                    m.sender_id,
-                    u.username
+                SELECT m.sender_id, u.username
                 FROM private_messages m
                 JOIN users u ON u.id = m.sender_id
                 WHERE m.receiver_id = ?
@@ -88,6 +88,41 @@ def split_values(value):
     ]
 
 
+PROJECT_OPTIONS = [
+    "API",
+    "CRM-система",
+    "Discord-бот",
+    "ERP-система",
+    "Telegram-бот",
+    "UI/UX-дизайн",
+    "Банковское приложение",
+    "Блог",
+    "Веб-приложение",
+    "Веб-сайт",
+    "Видеоплатформа",
+    "Десктопное приложение",
+    "Дизайн интерфейса",
+    "Интернет-магазин",
+    "Компьютерная игра",
+    "Лендинг",
+    "Мобильное приложение",
+    "Музыкальный сервис",
+    "Новостной портал",
+    "Образовательная платформа",
+    "Онлайн-курс",
+    "Портфолио",
+    "Сервис бронирования",
+    "Сервис доставки",
+    "Социальная сеть",
+    "Система управления базой данных",
+    "Финансовое приложение",
+    "Форум",
+    "Чат-бот",
+    "Другое"
+]
+
+
+# ГЛАВНАЯ СТРАНИЦА
 @app.route('/')
 @app.route('/home')
 def index():
@@ -108,7 +143,6 @@ def partners():
 
     current_user_id = session['user_id']
 
-    # Получаем пользователей и их профили
     with get_db() as conn:
         rows = conn.execute("""
             SELECT
@@ -127,7 +161,6 @@ def partners():
 
     users = [dict(row) for row in rows]
 
-    # Поиск по имени, профессии, навыкам и проекту
     if search:
         users = [
             user for user in users
@@ -143,21 +176,18 @@ def partners():
             )
         ]
 
-    # Фильтр по специальности
     if specialization:
         users = [
             user for user in users
             if norm(user.get('specialization')) == norm(specialization)
         ]
 
-    # Фильтр по опыту
     if experience:
         users = [
             user for user in users
             if experience_matches(user.get('experience'), experience)
         ]
 
-    # Фильтр по языку / навыку
     if language:
         users = [
             user for user in users
@@ -167,14 +197,12 @@ def partners():
             )
         ]
 
-    # Фильтр по проекту
     if project:
         users = [
             user for user in users
             if norm(user.get('project')) == norm(project)
         ]
 
-    # Формируем значения для выпадающих списков
     all_users = [dict(row) for row in rows]
 
     specializations = sorted({
@@ -204,13 +232,13 @@ def partners():
     )
 
 
+# О ПРОЕКТЕ
 @app.route('/about')
 def about():
     return render_template('about.html')
 
 
 # ЛИЧНЫЕ СООБЩЕНИЯ
-
 @app.route('/private_chat/<int:user_id>', methods=['GET', 'POST'])
 def private_chat(user_id):
 
@@ -220,12 +248,6 @@ def private_chat(user_id):
     current_user_id = session['user_id']
 
     with get_db() as conn:
-        conn.execute("""
-            UPDATE private_messages
-            SET is_read = 1
-            WHERE sender_id = ?
-            AND receiver_id = ?
-        """, (user_id, current_user_id))
         recipient = conn.execute(
             'SELECT id, username FROM users WHERE id = ?',
             (user_id,)
@@ -238,6 +260,13 @@ def private_chat(user_id):
             flash('Нельзя отправить сообщение самому себе.')
             return redirect(url_for('partners'))
 
+        conn.execute("""
+            UPDATE private_messages
+            SET is_read = 1
+            WHERE sender_id = ?
+            AND receiver_id = ?
+        """, (user_id, current_user_id))
+
         if request.method == 'POST':
             content = clean(request.form.get('content'))
 
@@ -248,10 +277,7 @@ def private_chat(user_id):
                     VALUES (?, ?, ?)
                 """, (current_user_id, user_id, content))
 
-            return redirect(url_for(
-                'private_chat',
-                user_id=user_id
-            ))
+            return redirect(url_for('private_chat', user_id=user_id))
 
         messages = conn.execute("""
             SELECT
@@ -283,7 +309,7 @@ def private_chat(user_id):
     )
 
 
-# ЧАТ
+# ОБЩИЙ ЧАТ
 @app.route('/chat')
 def chat():
     if 'user_id' not in session:
@@ -325,12 +351,12 @@ def send_message():
         return jsonify({'error': 'Необходимо войти'}), 401
 
     data = request.get_json(silent=True) or {}
-    text = clean(data.get('text'))
+    message_text = clean(data.get('text'))
 
-    if not text:
+    if not message_text:
         return jsonify({'error': 'Сообщение пустое'}), 400
 
-    if len(text) > 1000:
+    if len(message_text) > 1000:
         return jsonify({'error': 'Максимум 1000 символов'}), 400
 
     with get_db() as conn:
@@ -340,7 +366,7 @@ def send_message():
         """, (
             session['user_id'],
             session['username'],
-            text
+            message_text
         ))
 
         message_id = cursor.lastrowid
@@ -370,7 +396,6 @@ def profile():
     user_id = session['user_id']
 
     if request.method == 'POST':
-
         full_name = clean(request.form.get('full_name'))
         profession = clean(request.form.get('profession'))
         skills = ", ".join(request.form.getlist("skills"))
@@ -380,7 +405,7 @@ def profile():
         projects = clean(request.form.get('projects'))
 
         with get_db() as conn:
-            conn.execute('''
+            conn.execute("""
                 INSERT INTO profiles
                     (user_id, full_name, profession, skills, experience,
                      about, portfolio_url, projects)
@@ -394,7 +419,7 @@ def profile():
                     about = excluded.about,
                     portfolio_url = excluded.portfolio_url,
                     projects = excluded.projects
-            ''', (
+            """, (
                 user_id,
                 full_name,
                 profession,
@@ -409,7 +434,6 @@ def profile():
         return redirect(url_for('profile'))
 
     with get_db() as conn:
-
         profile_data = conn.execute(
             'SELECT * FROM profiles WHERE user_id = ?',
             (user_id,)
@@ -429,16 +453,16 @@ def profile():
     return render_template(
         'profile.html',
         profile=profile_data,
-        username=session.get('username', '')
+        username=session.get('username', ''),
+        project_options=PROJECT_OPTIONS
     )
 
 
-# ПУБЛИЧНЫЙ ПРОФИЛЬ ДРУГОГО ПОЛЬЗОВАТЕЛЯ
+# ПУБЛИЧНЫЙ ПРОФИЛЬ
 @app.route('/user/<int:user_id>')
 def user_profile(user_id):
 
     with get_db() as conn:
-
         user = conn.execute(
             'SELECT id, username FROM users WHERE id = ?',
             (user_id,)
@@ -493,9 +517,76 @@ def collaborate(user_id):
     return redirect(url_for('user_profile', user_id=user_id))
 
 
+# ОТПРАВКА ЖАЛОБЫ
+@app.route('/report/<int:user_id>', methods=['POST'])
+def submit_report(user_id):
+
+    if 'user_id' not in session:
+        flash('Сначала войди в аккаунт.', 'error')
+        return redirect(url_for('auth.login'))
+
+    reporter_id = session['user_id']
+
+    if reporter_id == user_id:
+        flash('Нельзя пожаловаться на самого себя.', 'error')
+        return redirect(url_for('user_profile', user_id=user_id))
+
+    reason = clean(request.form.get('reason'))
+    description = clean(request.form.get('description'))
+
+    allowed_reasons = [
+        'Спам',
+        'Оскорбления',
+        'Мошенничество',
+        'Неприемлемый контент',
+        'Фейковый профиль',
+        'Другое'
+    ]
+
+    if reason not in allowed_reasons:
+        flash('Выбери причину жалобы.', 'error')
+        return redirect(url_for('user_profile', user_id=user_id))
+
+    if len(description) > 2000:
+        flash('Описание слишком длинное.', 'error')
+        return redirect(url_for('user_profile', user_id=user_id))
+
+    with get_db() as conn:
+        target = conn.execute(
+            'SELECT id FROM users WHERE id = ?',
+            (user_id,)
+        ).fetchone()
+
+        if target is None:
+            abort(404)
+
+        conn.execute("""
+            INSERT INTO reports
+                (reporter_id, reported_user_id, reason, description)
+            VALUES (?, ?, ?, ?)
+        """, (reporter_id, user_id, reason, description))
+
+    flash('Жалоба успешно отправлена!', 'success')
+    return redirect(url_for('user_profile', user_id=user_id))
+
+
+# ИНИЦИАЛИЗАЦИЯ БАЗЫ АВТОРИЗАЦИИ
 init_auth_db()
 
 
+# НАЗНАЧЕНИЕ АДМИНИСТРАТОРА ИЗ ПЕРЕМЕННОЙ ОКРУЖЕНИЯ
+admin_username = os.environ.get("ADMIN_USERNAME", "").strip()
+
+if admin_username:
+    with get_db() as conn:
+        conn.execute("""
+            UPDATE users
+            SET role = 'admin'
+            WHERE username = ?
+        """, (admin_username,))
+
+
+# СОЗДАНИЕ ТАБЛИЦЫ ОБЩЕГО ЧАТА
 with get_db() as conn:
     conn.execute("""
         CREATE TABLE IF NOT EXISTS messages (
@@ -507,6 +598,180 @@ with get_db() as conn:
         )
     """)
 
+
+# ПРОВЕРКА АДМИНИСТРАТОРА
+def admin_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+
+        if "user_id" not in session:
+            return redirect(url_for("auth.login"))
+
+        with get_db() as conn:
+            user = conn.execute("""
+                SELECT id, username, role, is_blocked
+                FROM users
+                WHERE id = ?
+            """, (session["user_id"],)).fetchone()
+
+        if not user or user["is_blocked"]:
+            session.clear()
+            return redirect(url_for("auth.login"))
+
+        if user["username"].lower() != "nikita_admine":
+            abort(403)
+
+        if user["role"] != "admin":
+            abort(403)
+
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
+# ПАНЕЛЬ АДМИНИСТРАТОРА
+@app.route("/admin")
+@admin_required
+def admin_panel():
+
+    with get_db() as conn:
+        users = conn.execute("""
+            SELECT id, username, email, role, is_blocked, created_at
+            FROM users
+            ORDER BY id DESC
+        """).fetchall()
+
+        reports = conn.execute("""
+            SELECT
+                reports.*,
+                reporter.username AS reporter_name,
+                reported.username AS reported_name
+            FROM reports
+            LEFT JOIN users reporter
+                ON reporter.id = reports.reporter_id
+            LEFT JOIN users reported
+                ON reported.id = reports.reported_user_id
+            ORDER BY reports.id DESC
+        """).fetchall()
+
+        stats = {
+            "users": conn.execute(
+                "SELECT COUNT(*) FROM users"
+            ).fetchone()[0],
+
+            "blocked": conn.execute(
+                "SELECT COUNT(*) FROM users WHERE is_blocked = 1"
+            ).fetchone()[0],
+
+            "reports": conn.execute(
+                "SELECT COUNT(*) FROM reports WHERE status = 'new'"
+            ).fetchone()[0],
+
+            "projects": conn.execute(
+                "SELECT COUNT(*) FROM profiles WHERE projects != ''"
+            ).fetchone()[0]
+        }
+
+    return render_template(
+        "admin.html",
+        users=users,
+        reports=reports,
+        stats=stats
+    )
+
+
+# БЛОКИРОВКА И РАЗБЛОКИРОВКА ПОЛЬЗОВАТЕЛЯ
+@app.route("/admin/user/<int:user_id>/block", methods=["POST"])
+@admin_required
+def admin_block_user(user_id):
+
+    if user_id == session["user_id"]:
+        flash("Нельзя заблокировать самого себя.", "error")
+        return redirect(url_for("admin_panel"))
+
+    with get_db() as conn:
+        conn.execute("""
+            UPDATE users
+            SET is_blocked = CASE
+                WHEN is_blocked = 1 THEN 0
+                ELSE 1
+            END
+            WHERE id = ?
+        """, (user_id,))
+
+    flash("Статус пользователя изменён.", "success")
+    return redirect(url_for("admin_panel"))
+
+
+# ИЗМЕНЕНИЕ РОЛИ
+@app.route("/admin/user/<int:user_id>/role", methods=["POST"])
+@admin_required
+def admin_change_role(user_id):
+
+    if user_id == session["user_id"]:
+        flash("Нельзя изменить собственную роль.", "error")
+        return redirect(url_for("admin_panel"))
+
+    role = request.form.get("role")
+
+    if role not in ["user", "admin"]:
+        abort(400)
+
+    with get_db() as conn:
+        conn.execute("""
+            UPDATE users SET role = ?
+            WHERE id = ?
+        """, (role, user_id))
+
+    flash("Роль пользователя изменена.", "success")
+    return redirect(url_for("admin_panel"))
+
+
+# УДАЛЕНИЕ ИНФОРМАЦИИ О ПРОЕКТЕ
+@app.route("/admin/project/<int:user_id>/delete", methods=["POST"])
+@admin_required
+def admin_delete_project(user_id):
+
+    with get_db() as conn:
+        conn.execute("""
+            UPDATE profiles
+            SET projects = ''
+            WHERE user_id = ?
+        """, (user_id,))
+
+    flash("Информация о проекте удалена.", "success")
+    return redirect(url_for("admin_panel"))
+
+
+# ОБРАБОТКА ЖАЛОБЫ
+@app.route("/admin/report/<int:report_id>/resolve", methods=["POST"])
+@admin_required
+def admin_resolve_report(report_id):
+
+    with get_db() as conn:
+        conn.execute("""
+            UPDATE reports
+            SET status = 'resolved'
+            WHERE id = ?
+        """, (report_id,))
+
+    flash("Жалоба обработана.", "success")
+    return redirect(url_for("admin_panel"))
+
+
+# УДАЛЕНИЕ ЖАЛОБЫ
+@app.route("/admin/report/<int:report_id>/delete", methods=["POST"])
+@admin_required
+def admin_delete_report(report_id):
+
+    with get_db() as conn:
+        conn.execute(
+            "DELETE FROM reports WHERE id = ?",
+            (report_id,)
+        )
+
+    flash("Жалоба удалена.", "success")
+    return redirect(url_for("admin_panel"))
 
 
 if __name__ == '__main__':
