@@ -603,7 +603,6 @@ with get_db() as conn:
 def admin_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-
         if "user_id" not in session:
             return redirect(url_for("auth.login"))
 
@@ -618,14 +617,14 @@ def admin_required(func):
             session.clear()
             return redirect(url_for("auth.login"))
 
-        if user["username"].lower() not in ("nikita_admine", "nikita"):
+        if user["username"].lower() not in ("nikita_admine", "nekit"):
             abort(403)
 
         if user["role"] != "admin":
+            print("ADMIN DEBUG:", dict(user))
             abort(403)
 
         return func(*args, **kwargs)
-
     return wrapper
 
 
