@@ -134,7 +134,7 @@ def init_auth_db():
         conn.execute("""
             UPDATE users
             SET role = CASE
-                WHEN username = 'Nikita_admine' THEN 'admin'
+                WHEN username IN ('Nikita_admine', 'nekit') THEN 'admin'
                 ELSE 'user'
             END
         """)

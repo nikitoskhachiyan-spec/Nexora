@@ -618,7 +618,7 @@ def admin_required(func):
             session.clear()
             return redirect(url_for("auth.login"))
 
-        if user["username"].lower() != "nikita_admine":
+        if user["username"].lower() not in ("nikita_admine", "nikita"):
             abort(403)
 
         if user["role"] != "admin":
